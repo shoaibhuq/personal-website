@@ -3,8 +3,8 @@ import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "About Me", href: "#" },
-  { name: "Projects", href: "#" },
+  { name: "About Me", href: "#  " },
+  { name: "Projects", href: "#projects" },
   { name: "Contact Me", href: "#" },
   { name: "Photography", href: "#" },
 ];
@@ -13,7 +13,7 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className=" border-white border bg-black backdrop-blur-sm border-opacity-15 border-t-0 border-x-0 rounded-b-lg">
+    <header className=" border-white border bg-black backdrop-blur-sm border-opacity-15 border-t-0 border-x-0 .rounded-b-lg">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -22,7 +22,7 @@ export default function NavBar() {
           <a href="#/" className="-m-1.5 p-1.5">
             <span className="sr-only">Go home</span>
             <div className="text-white font-semibold text-base">
-              shoaibhuq.dev
+              shoaibhuq.com
             </div>
           </a>
         </div>
