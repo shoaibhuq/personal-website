@@ -1,8 +1,11 @@
+import ExpoIcon from "../../assets/Projects/Expo_Icon.svg";
+
 const posts = [
   {
     id: 1,
     title: "Routora Mobile App",
     href: "#",
+    type: "Mobile App",
     description:
       "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
     imageUrl:
@@ -10,9 +13,8 @@ const posts = [
     date: "2021 - Current",
     datetime: "2020-03-16",
     skills: {
-      name: "Mobile",
-      imageUrl:
-        "https://github.com/shoaibhuq/personal-website/blob/develop/src/assets/Projects/Expo_Icon.svg",
+      name: "Expo",
+      ExpoIcon,
     },
   },
   // More posts...
@@ -54,11 +56,11 @@ export default function Projects() {
                   </svg>
                   <div className="flex gap-x-2.5">
                     <img
-                      src={post.skills.imageUrl}
+                      src={post.skills.ExpoIcon}
                       alt=""
-                      className="h-6 w-6 flex-none rounded-full bg-white/10"
+                      title={post.skills.name}
+                      className="h-6 w-6 object-cover flex-none rounded-3xl bg-white/70"
                     />
-                    {post.skills.name}
                   </div>
                 </div>
               </div>
