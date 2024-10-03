@@ -12,6 +12,17 @@ const posts = [
     date: "Dec 2022 - Present",
     datetime: "2020-03-16",
   },
+  {
+    id: 1,
+    title: "Driver Advisor",
+    href: "https://devpost.com/software/drive-advisor",
+    type: "Mobile App",
+    description:
+      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
+    imageUrl: routoraMobile,
+    date: "Nov 2022",
+    datetime: "2020-03-16",
+  },
   // More posts...
 ];
 
