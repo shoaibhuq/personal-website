@@ -2,15 +2,20 @@
 
 import defaultTheme from "tailwindcss/defaultTheme";
 
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  ttheme: {
+  theme: {
     extend: {
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
     },
   },
+
   colors: {
     transparent: "transparent",
     current: "currentColor",
@@ -24,5 +29,17 @@ export default {
     "bubble-gum": "#ff77e9",
     bermuda: "#78dcca",
   },
-  plugins: [],
+  darkMode: "class",
+  plugins: [addVariablesForColors],
 };
+
+function addVariablesForColors({ addBase, theme }: any) {
+  let allColors = flattenColorPalette(theme("colors"));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ":root": newVars,
+  });
+}
