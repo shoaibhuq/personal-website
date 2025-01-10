@@ -15,7 +15,7 @@ const navigation = [
   {
     name: "Instagram",
     href: "https://www.instagram.com/cotton_shwab_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
-    icon: (props) => (
+    icon: (props: React.SVGProps<SVGSVGElement>) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
           fillRule="evenodd"
@@ -37,7 +37,7 @@ const navigation = [
   {
     name: "GitHub",
     href: "https://github.com/shoaibhuq",
-    icon: (props) => (
+    icon: (props: React.SVGProps<SVGSVGElement>) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
           fillRule="evenodd"
