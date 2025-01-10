@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*"],
+      "@/*": ["src/*"]
+    },
+    "typeRoots": ["node_modules/@types"]
+  },
+  "include": [
+    "./src/**/*.ts",
+    "src/App.tsx",
+    "src/main.jsx",
+    "src/main.tsx",
+    "src/components/NavBar.tsx",
+    "src/components/Footer.tsx",
+    "src/components/sections/AboutMe.tsx"
+  ], // Specify the path to your TypeScript files
+  "exclude": ["node_modules"]
+}

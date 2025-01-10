@@ -11,7 +11,7 @@ function App() {
         <header className="fixed inset-x-0 top-0 z-50">
           <NavBar />
         </header>
-        <main className="bg-black">
+        <main className="bg-black ">
           <AboutMe />
           <Projects />
         </main>
