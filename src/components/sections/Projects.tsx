@@ -19,7 +19,10 @@ const posts = [
 export default function Projects() {
   return (
     <>
-      <div className="text-gray-200 my-10 text-center font-bold text-5xl tracking-tight">
+      <div
+        id="projects"
+        className="text-gray-200 my-10 text-center font-bold text-5xl tracking-tight"
+      >
         Projects
       </div>
       <div className="relative bg-black h-auto items-center justify-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
