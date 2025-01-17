@@ -6,7 +6,7 @@ const navigation = [
   { name: "About Me", href: "#  " },
   { name: "Projects", href: "#projects" },
   { name: "Contact Me", href: "#" },
-  { name: "Photography", href: "https://photography.shoaibhuq.com" },
+  { name: "Photography", href: "#" },
 ];
 
 export default function NavBar() {
