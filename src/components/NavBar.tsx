@@ -2,11 +2,19 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-const navigation = [
-  { name: "About Me", href: "#  " },
+import { Link } from "react-router-dom";
+
+type NavigationItem = {
+  name: string;
+  href?: string;
+  link?: string;
+};
+
+const navigation: NavigationItem[] = [
+  { name: "About Me", href: "#about" },
   { name: "Projects", href: "#projects" },
-  { name: "Contact Me", href: "#" },
-  { name: "Photography", href: "https://photography.shoaibhuq.com" },
+  { name: "Contact Me", link: "/contact" },
+  { name: "Photography", link: "/photography" },
 ];
 
 export default function NavBar() {
@@ -37,15 +45,24 @@ export default function NavBar() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-sm font-semibold leading-6 text-white"
-            >
-              {item.name}
-            </a>
-          ))}
+          {navigation.map((item) =>
+            item.href ? (
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-sm font-semibold leading-6 text-white"
+              >
+                {item.name}
+              </a>
+            ) : (
+              <Link
+                to={`${item.link}`}
+                className="text-sm font-semibold leading-6 text-white"
+              >
+                {item.name}
+              </Link>
+            )
+          )}
         </div>
       </nav>
       <Dialog

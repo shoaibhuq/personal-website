@@ -1,15 +1,3 @@
 {
-  "redirects": [
-    { "source": "/(.*)", "destination": "/index.html" },
-    {
-      "source": "/photography",
-      "destination": "https://photography.shoaibhuq.com",
-      "permanent": true
-    },
-    {
-      "source": "/photography/:path*",
-      "destination": "https://photography.shoaibhuq.com/:path*",
-      "permanent": true
-    }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }

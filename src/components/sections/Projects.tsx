@@ -1,4 +1,7 @@
 import routoraMobile from "../../assets/Projects/routora.png";
+import driverAdv from "../../assets/Projects/driver-adv.png";
+import healthify from "../../assets/Projects/healthify.png";
+
 import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
 
 const posts = [
@@ -11,7 +14,26 @@ const posts = [
       "Routora is a cross-platform mobile app designed to optimize multi-stop routes, making driving more efficient for users worldwide. With over 25,000 users in 70+ countries—including Amazon drivers, realtors, and small business owners—Routora has helped save more than 1 million miles on the road.",
     imageUrl: routoraMobile,
     date: "Dec 2022 - Present",
-    datetime: "2020-03-16",
+  },
+  {
+    id: 2,
+    name: "Driver Advisor",
+    href: "https://youtu.be/tX4mBHLCjjc",
+    type: "Mobile App",
+    description:
+      "A mobile app that uses an in-house trained machine learning model to recognize and communicate street signs to users to help make the driving experience safer.",
+    imageUrl: driverAdv,
+    date: "Nov 2022",
+  },
+  {
+    id: 2,
+    name: "Healthify",
+    href: "https://youtu.be/FmwPfB-qPRg?t=41",
+    type: "Mobile App",
+    description:
+      "A mobile healthcare application that provides a more engaging take on telemedicine through augmented reality assistance.",
+    imageUrl: healthify,
+    date: "Nov 2023",
   },
   // More posts...
 ];
@@ -19,13 +41,16 @@ const posts = [
 export default function Projects() {
   return (
     <>
-      <div className="text-gray-200 my-10 text-center font-bold text-5xl tracking-tight">
+      <div
+        id="projects"
+        className="text-gray-200 my-10 text-center font-bold text-5xl tracking-tight"
+      >
         Projects
       </div>
       <div className="relative bg-black h-auto items-center justify-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ul
           role="list"
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 overflow-hidden"
+          className="grid grid-cols-1 gap-6 lg:grid-cols-2 overflow-hidden"
         >
           {posts.map((post) => (
             <li
@@ -33,7 +58,7 @@ export default function Projects() {
               className="col-span-1 flex flex-col divide-y text-center"
             >
               <CardContainer className="inter-var">
-                <CardBody className="bg-slate-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
+                <CardBody className="bg-slate-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[30rem] h-[40rem] rounded-xl p-6 border  ">
                   <CardItem
                     translateZ="50"
                     className="text-xl font-bold text-neutral-600 dark:text-white"
@@ -43,7 +68,7 @@ export default function Projects() {
                   <CardItem
                     as="p"
                     translateZ="60"
-                    className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
+                    className="text-neutral-500 h-[8rem] text-sm max-w-sm mt-2 dark:text-neutral-300"
                   >
                     {post.description}
                   </CardItem>
@@ -52,11 +77,11 @@ export default function Projects() {
                       src={post.imageUrl}
                       height="1000"
                       width="1000"
-                      className="mx-auto w-auto h-auto max-h-96 size-72 rounded-lg group-hover/card:shadow-xl"
+                      className="mx-auto object-contain h-[20rem] w-auto rounded-lg group-hover/card:shadow-xl"
                       alt="thumbnail"
                     />
                   </CardItem>
-                  <div className="flex justify-between items-center mt-20">
+                  <div className="flex justify-between items-center mt-8">
                     <CardItem
                       translateZ={20}
                       href="https://twitter.com/mannupaaji"
@@ -67,7 +92,7 @@ export default function Projects() {
                     </CardItem>
                     <CardItem
                       translateZ={20}
-                      as="button"
+                      as="a"
                       href={post.href}
                       className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
                     >
