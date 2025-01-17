@@ -1,5 +1,7 @@
 import routoraMobile from "../../assets/Projects/routora.png";
 import driverAdv from "../../assets/Projects/driver-adv.png";
+import healthify from "../../assets/Projects/healthify.png";
+
 import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
 
 const posts = [
@@ -22,6 +24,16 @@ const posts = [
       "A mobile app that uses an in-house trained machine learning model to recognize and communicate street signs to users to help make the driving experience safer.",
     imageUrl: driverAdv,
     date: "Nov 2022",
+  },
+  {
+    id: 2,
+    name: "Healthify",
+    href: "https://youtu.be/FmwPfB-qPRg?t=41",
+    type: "Mobile App",
+    description:
+      "A mobile healthcare application that provides a more engaging take on telemedicine through augmented reality assistance.",
+    imageUrl: healthify,
+    date: "Nov 2023",
   },
   // More posts...
 ];
@@ -65,7 +77,7 @@ export default function Projects() {
                       src={post.imageUrl}
                       height="1000"
                       width="1000"
-                      className="mx-auto object-contain h-auto max-h-[20rem] w-auto rounded-lg group-hover/card:shadow-xl"
+                      className="mx-auto object-contain h-[20rem] w-auto rounded-lg group-hover/card:shadow-xl"
                       alt="thumbnail"
                     />
                   </CardItem>
