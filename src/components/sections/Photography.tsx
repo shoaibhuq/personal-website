@@ -1,172 +1,274 @@
-"use client";
+import React from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  MotionValue,
+} from "framer-motion";
 
-import { useState } from "react";
-import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
-const navigation = [
-  { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
-];
-
-export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+export default function Photography() {
   return (
-    <div className="bg-gray-900">
-      <header className="absolute inset-x-0 top-0 z-50">
-        <nav
-          aria-label="Global"
-          className="flex items-center justify-between p-6 lg:px-8"
-        >
-          <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                alt=""
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                className="h-8 w-auto"
-              />
-            </a>
-          </div>
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
+    <>
+      <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+        <div className="text-center">
+          <p className="text-base font-semibold text-indigo-600">
+            You found a page still being worked on!
+          </p>
+          <h1 className="mt-4 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+            Coming Soon...
+          </h1>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <Link
+              to="/"
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="size-6" />
-            </button>
-          </div>
-          <div className="hidden lg:flex lg:gap-x-12">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-sm/6 font-semibold text-white"
-              >
-                {item.name}
-              </a>
-            ))}
-          </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm/6 font-semibold text-white">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
-        </nav>
-        <Dialog
-          open={mobileMenuOpen}
-          onClose={setMobileMenuOpen}
-          className="lg:hidden"
-        >
-          <div className="fixed inset-0 z-50" />
-          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
-            <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  alt=""
-                  src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                  className="h-8 w-auto"
-                />
-              </a>
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(false)}
-                className="-m-2.5 rounded-md p-2.5 text-gray-400"
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="size-6" />
-              </button>
-            </div>
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-gray-500/25">
-                <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800"
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-                <div className="py-6">
-                  <a
-                    href="#"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-gray-800"
-                  >
-                    Log in
-                  </a>
-                </div>
-              </div>
-            </div>
-          </DialogPanel>
-        </Dialog>
-      </header>
-
-      <div className="relative isolate pt-14">
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-        >
-          <div
-            style={{
-              clipPath:
-                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-            }}
-            className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-          />
-        </div>
-        <div className="py-24 sm:py-32 lg:pb-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">
-                Data to enrich your online business
-              </h1>
-              <p className="mt-8 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8">
-                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-                lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.
-              </p>
-              <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a
-                  href="#"
-                  className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-                >
-                  Get started
-                </a>
-                <a href="#" className="text-sm/6 font-semibold text-white">
-                  Learn more <span aria-hidden="true">→</span>
-                </a>
-              </div>
-            </div>
-            <img
-              alt="App screenshot"
-              src="https://tailwindui.com/plus/img/component-images/dark-project-app-screenshot.png"
-              width={2432}
-              height={1442}
-              className="mt-16 rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 sm:mt-24"
-            />
+              Go back home
+            </Link>
           </div>
         </div>
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-        >
-          <div
-            style={{
-              clipPath:
-                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-            }}
-            className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-          />
-        </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 }
+
+//  const Photography = ({}: {
+//   products: {
+//     title: string;
+//     link: string;
+//     thumbnail: string;
+//   }[];
+// }) => {
+//   const firstRow = products.slice(0, 5);
+//   const secondRow = products.slice(5, 10);
+//   const thirdRow = products.slice(10, 15);
+//   const ref = React.useRef(null);
+//   const { scrollYProgress } = useScroll({
+//     target: ref,
+//     offset: ["start start", "end start"],
+//   });
+
+//   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+
+//   const translateX = useSpring(
+//     useTransform(scrollYProgress, [0, 1], [0, 1000]),
+//     springConfig
+//   );
+//   const translateXReverse = useSpring(
+//     useTransform(scrollYProgress, [0, 1], [0, -1000]),
+//     springConfig
+//   );
+//   const rotateX = useSpring(
+//     useTransform(scrollYProgress, [0, 0.2], [15, 0]),
+//     springConfig
+//   );
+//   const opacity = useSpring(
+//     useTransform(scrollYProgress, [0, 0.2], [0.2, 1]),
+//     springConfig
+//   );
+//   const rotateZ = useSpring(
+//     useTransform(scrollYProgress, [0, 0.2], [20, 0]),
+//     springConfig
+//   );
+//   const translateY = useSpring(
+//     useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
+//     springConfig
+//   );
+//   return (
+//     <div
+//       ref={ref}
+//       className="h-[300vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+//     >
+//       <Header />
+//       <motion.div
+//         style={{
+//           rotateX,
+//           rotateZ,
+//           translateY,
+//           opacity,
+//         }}
+//         className=""
+//       >
+//         <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
+//           {firstRow.map((product) => (
+//             <ProductCard
+//               product={product}
+//               translate={translateX}
+//               key={product.title}
+//             />
+//           ))}
+//         </motion.div>
+//         <motion.div className="flex flex-row  mb-20 space-x-20 ">
+//           {secondRow.map((product) => (
+//             <ProductCard
+//               product={product}
+//               translate={translateXReverse}
+//               key={product.title}
+//             />
+//           ))}
+//         </motion.div>
+//         <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
+//           {thirdRow.map((product) => (
+//             <ProductCard
+//               product={product}
+//               translate={translateX}
+//               key={product.title}
+//             />
+//           ))}
+//         </motion.div>
+//       </motion.div>
+//     </div>
+//   );
+// };
+
+// const Header = () => {
+//   return (
+//     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0">
+//       <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
+//         The Ultimate <br /> development studio
+//       </h1>
+//       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
+//         We build beautiful products with the latest technologies and frameworks.
+//         We are a team of passionate developers and designers that love to build
+//         amazing products.
+//       </p>
+//     </div>
+//   );
+// };
+
+// const ProductCard = ({
+//   product,
+//   translate,
+// }: {
+//   product: {
+//     title: string;
+//     link: string;
+//     thumbnail: string;
+//   };
+//   translate: MotionValue<number>;
+// }) => {
+//   return (
+//     <motion.div
+//       style={{
+//         x: translate,
+//       }}
+//       whileHover={{
+//         y: -20,
+//       }}
+//       key={product.title}
+//       className="group/product h-96 w-[30rem] relative flex-shrink-0"
+//     >
+//       <div className="block group-hover/product:shadow-2xl ">
+//         <img
+//           src={product.thumbnail}
+//           height="600"
+//           width="600"
+//           className="object-cover object-left-top absolute h-full w-full inset-0"
+//           alt={product.title}
+//         />
+//       </div>
+//       {/* <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div> */}
+//       <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
+//         {product.title}
+//       </h2>
+//     </motion.div>
+//   );
+// };
+
+// const products = [
+//   {
+//     title: "Moonbeam",
+//     link: "https://gomoonbeam.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/moonbeam.png",
+//   },
+//   {
+//     title: "Cursor",
+//     link: "https://cursor.so",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/cursor.png",
+//   },
+//   {
+//     title: "Rogue",
+//     link: "https://userogue.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/rogue.png",
+//   },
+
+//   {
+//     title: "Editorially",
+//     link: "https://editorially.org",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/editorially.png",
+//   },
+//   {
+//     title: "Editrix AI",
+//     link: "https://editrix.ai",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/editrix.png",
+//   },
+//   {
+//     title: "Pixel Perfect",
+//     link: "https://app.pixelperfect.quest",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/pixelperfect.png",
+//   },
+
+//   {
+//     title: "Algochurn",
+//     link: "https://algochurn.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/algochurn.png",
+//   },
+//   {
+//     title: "Aceternity UI",
+//     link: "https://ui.aceternity.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/aceternityui.png",
+//   },
+//   {
+//     title: "Tailwind Master Kit",
+//     link: "https://tailwindmasterkit.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/tailwindmasterkit.png",
+//   },
+//   {
+//     title: "SmartBridge",
+//     link: "https://smartbridgetech.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/smartbridge.png",
+//   },
+//   {
+//     title: "Renderwork Studio",
+//     link: "https://renderwork.studio",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/renderwork.png",
+//   },
+
+//   {
+//     title: "Creme Digital",
+//     link: "https://cremedigital.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/cremedigital.png",
+//   },
+//   {
+//     title: "Golden Bells Academy",
+//     link: "https://goldenbellsacademy.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/goldenbellsacademy.png",
+//   },
+//   {
+//     title: "Invoker Labs",
+//     link: "https://invoker.lol",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/invoker.png",
+//   },
+//   {
+//     title: "E Free Invoice",
+//     link: "https://efreeinvoice.com",
+//     thumbnail:
+//       "https://aceternity.com/images/products/thumbnails/new/efreeinvoice.png",
+//   },
+// ];
