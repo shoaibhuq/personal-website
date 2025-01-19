@@ -35,7 +35,6 @@ const posts = [
     imageUrl: healthify,
     date: "Nov 2023",
   },
-  // More posts...
 ];
 
 export default function Projects() {
@@ -47,18 +46,15 @@ export default function Projects() {
       >
         Projects
       </div>
-      <div className="relative bg-black h-auto items-center justify-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative bg-black mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ul
           role="list"
-          className="grid grid-cols-1 gap-6 lg:grid-cols-2 overflow-hidden"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-hidden place-items-center"
         >
           {posts.map((post) => (
-            <li
-              key={post.id}
-              className="col-span-1 flex flex-col divide-y text-center"
-            >
+            <li key={post.id} className="col-span-1 flex flex-col text-center">
               <CardContainer className="inter-var">
-                <CardBody className="bg-slate-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[30rem] h-[40rem] rounded-xl p-6 border  ">
+                <CardBody className="bg-slate-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full max-w-sm sm:max-w-md rounded-xl p-6 border h-auto">
                   <CardItem
                     translateZ="50"
                     className="text-xl font-bold text-neutral-600 dark:text-white"
@@ -68,7 +64,7 @@ export default function Projects() {
                   <CardItem
                     as="p"
                     translateZ="60"
-                    className="text-neutral-500 h-[8rem] text-sm max-w-sm mt-2 dark:text-neutral-300"
+                    className="text-neutral-500 h-auto text-sm mt-2 dark:text-neutral-300"
                   >
                     {post.description}
                   </CardItem>
@@ -77,7 +73,7 @@ export default function Projects() {
                       src={post.imageUrl}
                       height="1000"
                       width="1000"
-                      className="mx-auto object-contain h-[20rem] w-auto rounded-lg group-hover/card:shadow-xl"
+                      className="mx-auto object-contain h-64 w-auto rounded-lg group-hover/card:shadow-xl"
                       alt="thumbnail"
                     />
                   </CardItem>
@@ -101,26 +97,6 @@ export default function Projects() {
                   </div>
                 </CardBody>
               </CardContainer>
-              {/* <div className="flex flex-1 flex-col p-8">
-              <img
-                alt=""
-                src={post.imageUrl}
-                className="mx-auto h-auto size-72 rounded-lg"
-              />
-              <h3 className="mt-6 text-md font-medium text-gray-900">
-                {post.name}
-              </h3>
-              <dl className="mt-1 flex grow flex-col justify-between">
-                <dt className="sr-only">Title</dt>
-                <dd className="text-sm text-gray-500">{post.description}</dd>
-                <dt className="sr-only">Role</dt>
-                <dd className="mt-3">
-                  <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                    {post.type}
-                  </span>
-                </dd>
-              </dl>
-            </div> */}
             </li>
           ))}
         </ul>
