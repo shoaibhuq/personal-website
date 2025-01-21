@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   BuildingOffice2Icon,
@@ -7,12 +7,17 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 
-function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-  alert("This form does not work yet! Coming soon...");
-}
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Contact() {
+  const recaptcha = useRef<ReCAPTCHA>(null);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const captchaValue = recaptcha.current?.getValue();
+    alert("This form does not work yet! Coming soon...");
+  }
+
   return (
     <div className="relative isolate bg-black min-h-screen">
       <Link to="/" className="absolute top-6 left-6 z-50">
@@ -88,7 +93,7 @@ export default function Contact() {
                   />
                 </dt>
                 <dd>
-                  <a href="tel:+1 (555) 234-5678" className="hover:text-white">
+                  <a href="tel:+1 (469) 544-8878" className="hover:text-white">
                     +1 (469) 544-8878
                   </a>
                 </dd>
@@ -103,7 +108,7 @@ export default function Contact() {
                 </dt>
                 <dd>
                   <a
-                    href="mailto:hello@example.com"
+                    href="mailto:huq.shoaib@gmail.com"
                     className="hover:text-white"
                   >
                     huq.shoaib@gmail.com
@@ -215,6 +220,7 @@ export default function Contact() {
             </div>
           </div>
         </form>
+        <ReCAPTCHA sitekey={process.env.RECAPTCHA_SITE_KEY!} />
       </div>
     </div>
   );
