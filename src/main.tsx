@@ -16,10 +16,12 @@ const router = createBrowserRouter([
   {
     path: "/photography",
     element: <Photography />,
+    errorElement: <NotFound />,
   },
   {
     path: "/contact",
     element: <Contact />,
+    errorElement: <NotFound />,
   },
 ]);
 
