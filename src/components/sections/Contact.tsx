@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   BuildingOffice2Icon,
@@ -7,15 +7,55 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 
-import ReCAPTCHA from "react-google-recaptcha";
+import emailjs from "@emailjs/browser";
+import {
+  GoogleReCaptchaProvider,
+  GoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 
 export default function Contact() {
-  const recaptcha = useRef<ReCAPTCHA>(null);
+  // const [token, setToken] = useState("");
+  // const verifyRecaptchaCallback = useCallback((token: string) => {
+  //   setToken(token);
+  // }, []);
+
+  const form = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    // 1. Inject the reCAPTCHA v3 script when this component mounts
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    // 2. Define the global onSubmit callback that the reCAPTCHA script looks for
+    //    (Matches data-callback="onSubmit" on our button below)
+    (window as any).onSubmit = function (token: string) {
+      //By default, just submit the form
+      if (form.current) {
+        form.current.submit();
+      }
+    };
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const captchaValue = recaptcha.current?.getValue();
-    alert("This form does not work yet! Coming soon...");
+
+    emailjs
+      .sendForm("service_0awtuwk", "template_l2r1d8w", form.current!, {
+        publicKey: "wYlIK5vaM6IMkPpSa",
+      })
+      .then(
+        () => {
+          console.log("SUCCESS!");
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+        }
+      );
+
+    alert("Form submitted with reCAPTCHA token!");
   }
 
   return (
@@ -119,6 +159,7 @@ export default function Contact() {
           </div>
         </div>
         <form
+          id="contact-form"
           onSubmit={handleSubmit}
           className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48"
         >
@@ -212,15 +253,17 @@ export default function Contact() {
             </div>
             <div className="mt-8 flex justify-end">
               <button
+                className="g-recaptcha rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}
+                data-callback="onSubmit"
+                data-action="submit"
                 type="submit"
-                className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
                 Send message
               </button>
             </div>
           </div>
         </form>
-        <ReCAPTCHA sitekey={process.env.RECAPTCHA_SITE_KEY!} />
       </div>
     </div>
   );

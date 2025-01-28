@@ -2,6 +2,8 @@ import routoraMobile from "../../assets/Projects/routora.png";
 import driverAdv from "../../assets/Projects/driver-adv.png";
 import healthify from "../../assets/Projects/healthify.png";
 
+import { motion } from "motion/react";
+
 import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
 
 const posts = [
@@ -51,8 +53,19 @@ export default function Projects() {
           role="list"
           className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-hidden place-items-center"
         >
-          {posts.map((post) => (
-            <li key={post.id} className="col-span-1 flex flex-col text-center">
+          {posts.map((post, index) => (
+            <motion.li
+              key={post.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: [0.16, 0.77, 0.47, 0.97],
+              }}
+              className="col-span-1 flex flex-col text-center w-full"
+            >
               <CardContainer className="inter-var">
                 <CardBody className="bg-slate-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full max-w-sm sm:max-w-md rounded-xl p-6 border h-auto">
                   <CardItem
@@ -69,12 +82,15 @@ export default function Projects() {
                     {post.description}
                   </CardItem>
                   <CardItem translateZ="100" className="w-full mt-4">
-                    <img
+                    <motion.img
                       src={post.imageUrl}
                       height="1000"
                       width="1000"
                       className="mx-auto object-contain h-64 w-auto rounded-lg group-hover/card:shadow-xl"
                       alt="thumbnail"
+                      initial={{ scale: 0.9 }}
+                      whileInView={{ scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.2 }}
                     />
                   </CardItem>
                   <div className="flex justify-between items-center mt-8">
@@ -84,7 +100,7 @@ export default function Projects() {
                       target="__blank"
                       className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
                     >
-                      Mobile App
+                      {post.type}
                     </CardItem>
                     <CardItem
                       translateZ={20}
@@ -97,7 +113,7 @@ export default function Projects() {
                   </div>
                 </CardBody>
               </CardContainer>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </div>
