@@ -5,7 +5,28 @@ import img3 from "../../assets/AboutMe/about3.jpg";
 import img4 from "../../assets/AboutMe/about4.jpg";
 import img5 from "../../assets/AboutMe/about5.jpg";
 
+import { motion } from "framer-motion";
+
 const AboutMe = () => {
+  // 1. Define your container and item variants
+  const containerVariant = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.2, // Adjust to control the delay between images
+      },
+    },
+  };
+
+  const itemVariant = {
+    hidden: { x: 100, opacity: 0 },
+    show: {
+      x: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 60, damping: 15 },
+    },
+  };
+
   return (
     <div id="about" className="relative isolate">
       <svg
@@ -49,6 +70,7 @@ const AboutMe = () => {
           }}
         />
       </div>
+
       <div className="overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
           <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
@@ -57,8 +79,8 @@ const AboutMe = () => {
                 Hi, I&apos;m Shoaib 👋🏽
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-300 sm:max-w-md lg:max-w-none">
-                I am a Dallas, TX based<b> software engineer </b>with a passion
-                for <b> mobile application development/design.</b> I also love
+                I am a Dallas, TX based <b>software engineer</b> with a passion
+                for <b>mobile application development/design.</b> I also love
                 doing <b>photography and videography</b> in my free time.
                 I&apos;m 21 and currently a student at the University of Texas
                 at Dallas. I have worked on a variety of mobile applications to
@@ -74,54 +96,66 @@ const AboutMe = () => {
                 </button>
               </div>
             </div>
-            <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
+
+            {/* Parent motion.div controlling the stagger */}
+            <motion.div
+              className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0"
+              variants={containerVariant}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+            >
               <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
-                <div className="relative">
+                <motion.div variants={itemVariant} className="relative">
                   <img
                     src={img1}
                     alt="shoaib with camera"
                     className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                   />
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                </div>
+                </motion.div>
               </div>
+
               <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
-                <div className="relative">
+                <motion.div variants={itemVariant} className="relative">
                   <img
                     src={img2}
                     alt=""
                     className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                   />
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                </div>
-                <div className="relative">
+                </motion.div>
+
+                <motion.div variants={itemVariant} className="relative">
                   <img
                     src={img3}
                     alt=""
                     className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                   />
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                </div>
+                </motion.div>
               </div>
+
               <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
-                <div className="relative">
+                <motion.div variants={itemVariant} className="relative">
                   <img
                     src={img4}
                     alt=""
                     className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                   />
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                </div>
-                <div className="relative">
+                </motion.div>
+
+                <motion.div variants={itemVariant} className="relative">
                   <img
                     src={img5}
                     alt=""
                     className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                   />
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
