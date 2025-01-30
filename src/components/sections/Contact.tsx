@@ -10,7 +10,7 @@ import {
 import LinkedinIcon from "../../assets/social-icons/SVG/Color/LinkedIN.svg";
 import InstagramIcon from "../../assets/social-icons/SVG/Color/Instagram.svg";
 import GithubIcon from "../../assets/social-icons/SVG/Color/Github.svg";
-import resume from "../../assets/Contact/resume.pdf";
+import shoaib_resume from "../../assets/Contact/shoaib_resume.pdf";
 
 export default function Contact() {
   return (
@@ -158,7 +158,7 @@ export default function Contact() {
               </a>
 
               <a
-                href={resume}
+                href={shoaib_resume}
                 download
                 className="flex items-center gap-x-4 rounded-lg bg-blue-600/50 px-6 py-4 text-white hover:bg-blue-500/50 transition-colors duration-200"
               >
