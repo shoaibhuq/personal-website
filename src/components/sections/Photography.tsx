@@ -7,6 +7,12 @@ import {
   MotionValue,
 } from "framer-motion";
 import { Link } from "react-router-dom";
+import {
+  EnvelopeIcon,
+  PhoneIcon,
+  HomeIcon,
+  ArrowDownTrayIcon,
+} from "@heroicons/react/24/outline";
 
 export default function Photography() {
   const ref = React.useRef(null);
@@ -48,6 +54,10 @@ export default function Photography() {
         ref={ref}
         className="h-[300vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
       >
+        {/* Add home icon */}
+        <Link to="/" className="absolute top-6 left-6 z-50">
+          <HomeIcon className="h-10 w-10 text-gray-300/50 hover:text-blue-200" />
+        </Link>
         <Header />
         <motion.div
           style={{
@@ -101,8 +111,8 @@ const Header = () => {
         That Last Forever
       </h1>
       <p className="max-w-2xl text-lg md:text-xl mt-8 text-gray-300">
-        Professional photography services for weddings, portraits, and special
-        events. Let's create timeless memories together.
+        Professional photography services for graduation, portraits, weddings
+        and special events. Let's create timeless memories together.
       </p>
     </div>
   );
@@ -171,7 +181,9 @@ const ContactSection = () => {
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                <span>+1 (555) 123-4567</span>
+                <a href="tel:+14695448878" className="hover:text-white">
+                  +1 (469) 544-8878
+                </a>
               </div>
               <div className="flex items-center gap-4">
                 <svg
@@ -187,11 +199,16 @@ const ContactSection = () => {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <span>contact@example.com</span>
+                <a
+                  href="mailto:huq.shoaib@gmail.com"
+                  className="hover:text-white"
+                >
+                  huq.shoaib@gmail.com
+                </a>
               </div>
             </div>
           </div>
-          <form className="space-y-6">
+          {/* <form className="space-y-6">
             <div>
               <input
                 type="text"
@@ -216,7 +233,7 @@ const ContactSection = () => {
             <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 transition-opacity">
               Send Message
             </button>
-          </form>
+          </form> */}
         </div>
       </div>
     </section>
