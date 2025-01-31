@@ -7,9 +7,9 @@ import {
   ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 
-// import LinkedinIcon from "../../assets/social-icons/SVG/Color/LinkedIN.svg";
-import InstagramIcon from "../../assets/social-icons/SVG/Color/Instagram.svg";
-import GithubIcon from "../../assets/social-icons/SVG/Color/Github.svg";
+import LinkedinIcon from "../../assets/social-icons/svg/Color/LinkedIN.svg";
+import InstagramIcon from "../../assets/social-icons/svg/Color/Instagram.svg";
+import GithubIcon from "../../assets/social-icons/svg/Color/Github.svg";
 import shoaib_resume from "../../assets/Contact/shoaib_resume.pdf";
 
 export default function Contact() {
@@ -137,7 +137,7 @@ export default function Contact() {
                 <span>Instagram</span>
               </a>
 
-              {/* <a
+              <a
                 href="https://www.linkedin.com/in/shoaibhuq"
                 target="_blank"
                 rel="noreferrer"
@@ -145,7 +145,7 @@ export default function Contact() {
               >
                 <img className="h-6 w-6" src={LinkedinIcon} />
                 <span>LinkedIn</span>
-              </a> */}
+              </a>
 
               <a
                 href="https://github.com/shoaibhuq"

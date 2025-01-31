@@ -2,7 +2,7 @@
 
 Check it out live:
 [shoaibhuq.com
-](https://personal-website-i4uv4mvyp-shoaibhuqs-projects.vercel.app/)
+](https://www.shoaibhuq.com/)
 
 ### Still a work in progress...
 
