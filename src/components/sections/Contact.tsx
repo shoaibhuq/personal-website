@@ -1,69 +1,22 @@
-import { useState, useRef, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   BuildingOffice2Icon,
   EnvelopeIcon,
   PhoneIcon,
   HomeIcon,
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 
-import emailjs from "@emailjs/browser";
-import {
-  GoogleReCaptchaProvider,
-  GoogleReCaptcha,
-} from "react-google-recaptcha-v3";
+import LinkedinIcon from "../../assets/social-icons/svg/Color/LinkedIN.svg";
+import InstagramIcon from "../../assets/social-icons/svg/Color/Instagram.svg";
+import GithubIcon from "../../assets/social-icons/svg/Color/Github.svg";
+import shoaib_resume from "../../assets/Contact/shoaib_resume.pdf";
 
 export default function Contact() {
-  // const [token, setToken] = useState("");
-  // const verifyRecaptchaCallback = useCallback((token: string) => {
-  //   setToken(token);
-  // }, []);
-
-  const form = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    // 1. Inject the reCAPTCHA v3 script when this component mounts
-    const script = document.createElement("script");
-    script.src = "https://www.google.com/recaptcha/api.js";
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-
-    // 2. Define the global onSubmit callback that the reCAPTCHA script looks for
-    //    (Matches data-callback="onSubmit" on our button below)
-    (window as any).onSubmit = function (token: string) {
-      //By default, just submit the form
-      if (form.current) {
-        form.current.submit();
-      }
-    };
-  }, []);
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    emailjs
-      .sendForm("service_0awtuwk", "template_l2r1d8w", form.current!, {
-        publicKey: "wYlIK5vaM6IMkPpSa",
-      })
-      .then(
-        () => {
-          console.log("SUCCESS!");
-        },
-        (error) => {
-          console.log("FAILED...", error.text);
-        }
-      );
-
-    alert("Form submitted with reCAPTCHA token!");
-  }
-
   return (
     <div className="relative isolate bg-black min-h-screen">
-      <Link to="/" className="absolute top-6 left-6 z-50">
-        <HomeIcon className="h-7 w-7 text-white hover:text-blue-200" />
-      </Link>
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
+        {/* Left Column */}
         <div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden ring-1 ring-white/5 lg:w-1/2">
@@ -158,112 +111,60 @@ export default function Contact() {
             </dl>
           </div>
         </div>
-        <form
-          id="contact-form"
-          onSubmit={handleSubmit}
-          className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48"
-        >
-          <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="first-name"
-                  className="block text-sm/6 font-semibold text-white"
-                >
-                  First name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="first-name"
-                    name="first-name"
-                    type="text"
-                    autoComplete="given-name"
-                    className="block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="last-name"
-                  className="block text-sm/6 font-semibold text-white"
-                >
-                  Last name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="last-name"
-                    name="last-name"
-                    type="text"
-                    autoComplete="family-name"
-                    className="block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="email"
-                  className="block text-sm/6 font-semibold text-white"
-                >
-                  Email
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="phone-number"
-                  className="block text-sm/6 font-semibold text-white"
-                >
-                  Phone number
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="phone-number"
-                    name="phone-number"
-                    type="tel"
-                    autoComplete="tel"
-                    className="block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="message"
-                  className="block text-sm/6 font-semibold text-white"
-                >
-                  Message
-                </label>
-                <div className="mt-2.5">
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    className="block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
-                    defaultValue={""}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="mt-8 flex justify-end">
-              <button
-                className="g-recaptcha rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}
-                data-callback="onSubmit"
-                data-action="submit"
-                type="submit"
+
+        {/* Right Column */}
+        <div className="px-6 pt-12 sm:scroll-pt-24 lg:px-8 lg:py-48">
+          <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
+            <div className="space-y-6">
+              <a
+                href="mailto:huq.shoaib@gmail.com"
+                className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
               >
-                Send message
-              </button>
+                <EnvelopeIcon className="h-6 w-6" />
+                <span>Send an email</span>
+              </a>
+
+              <a
+                href="https://www.instagram.com/cotton_shwab_/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
+              >
+                <img className="h-6 w-6" src={InstagramIcon} />
+                <span>Instagram</span>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/shoaibhuq"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
+              >
+                <img className="h-6 w-6" src={LinkedinIcon} />
+                <span>LinkedIn</span>
+              </a>
+
+              <a
+                href="https://github.com/shoaibhuq"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
+              >
+                <img className="h-6 w-6" src={GithubIcon} />
+                <span>GitHub</span>
+              </a>
+
+              <a
+                href={shoaib_resume}
+                download
+                className="flex items-center gap-x-4 rounded-lg bg-blue-600/50 px-6 py-4 text-white hover:bg-blue-500/50 transition-colors duration-200"
+              >
+                <ArrowDownTrayIcon className="h-6 w-6" />
+                <span>Download Resume</span>
+              </a>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

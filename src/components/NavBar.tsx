@@ -11,8 +11,8 @@ type NavigationItem = {
 };
 
 const navigation: NavigationItem[] = [
-  { name: "About Me", href: "#about" },
-  { name: "Projects", href: "#projects" },
+  { name: "About Me", href: "/#about" },
+  { name: "Projects", href: "/#projects" },
   { name: "Contact Me", link: "/contact" },
   { name: "Photography", link: "/photography" },
 ];
@@ -21,13 +21,13 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className=" border-white border bg-black backdrop-blur-sm border-opacity-15 border-t-0 border-x-0 .rounded-b-lg">
+    <header className=" border-white border bg-black/70 backdrop-blur-sm border-opacity-15 border-t-0 border-x-0 .rounded-b-lg">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#/" className="-m-1.5 p-1.5">
+          <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Go home</span>
             <div className="text-white font-semibold text-base">
               shoaibhuq.com
@@ -108,6 +108,7 @@ export default function NavBar() {
                     <Link
                       to={`${item.link}`}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}
                     </Link>
