@@ -54,10 +54,6 @@ export default function Photography() {
         ref={ref}
         className="h-[300vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
       >
-        {/* Add home icon */}
-        <Link to="/" className="absolute top-6 left-6 z-50">
-          <HomeIcon className="h-10 w-10 text-gray-300/50 hover:text-blue-200" />
-        </Link>
         <Header />
         <motion.div
           style={{

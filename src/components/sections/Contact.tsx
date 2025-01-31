@@ -15,9 +15,6 @@ import shoaib_resume from "../../assets/Contact/shoaib_resume.pdf";
 export default function Contact() {
   return (
     <div className="relative isolate bg-black min-h-screen">
-      <Link to="/" className="absolute top-6 left-6 z-50">
-        <HomeIcon className="h-7 w-7 text-white hover:text-blue-200" />
-      </Link>
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
         {/* Left Column */}
         <div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
