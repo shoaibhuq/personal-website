@@ -27,6 +27,16 @@ const router = createBrowserRouter([
   },
 ]);
 
+// const host = window.location.hostname;
+// const subdomain = host.split(".")[0];
+
+// if (
+//   (subdomain === "photo" || subdomain === "photography") &&
+//   window.location.pathname !== "/photography"
+// ) {
+//   window.location.pathname = "/photography";
+// }
+
 function App() {
   return (
     <>

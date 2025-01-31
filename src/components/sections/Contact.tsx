@@ -113,7 +113,7 @@ export default function Contact() {
         </div>
 
         {/* Right Column */}
-        <div className="px-6 pt-24 sm:pt-32 lg:px-8 lg:py-48">
+        <div className="px-6 pt-12 sm:scroll-pt-24 lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <div className="space-y-6">
               <a
@@ -125,7 +125,7 @@ export default function Contact() {
               </a>
 
               <a
-                href="https://www.instagram.com/shoaibhuq"
+                href="https://www.instagram.com/cotton_shwab_/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
