@@ -7,6 +7,8 @@ import {
   ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 
+import { motion } from "framer-motion";
+
 import LinkedinIcon from "../../assets/social-icons/svg/Color/LinkedIN.svg";
 import InstagramIcon from "../../assets/social-icons/svg/Color/Instagram.svg";
 import GithubIcon from "../../assets/social-icons/svg/Color/Github.svg";
@@ -113,58 +115,83 @@ export default function Contact() {
         </div>
 
         {/* Right Column */}
-        <div className="px-6 pt-12 sm:scroll-pt-24 lg:px-8 lg:py-48">
+        <motion.div
+          className="px-6 pt-12 sm:scroll-pt-24 lg:px-8 lg:py-48"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <div className="space-y-6">
-              <a
+              <motion.a
                 href="mailto:huq.shoaib@gmail.com"
                 className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+                whileHover={{ scale: 1.05 }}
               >
                 <EnvelopeIcon className="h-6 w-6" />
                 <span>Send an email</span>
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
                 href="https://www.instagram.com/cotton_shwab_/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                whileHover={{ scale: 1.05 }}
               >
-                <img className="h-6 w-6" src={InstagramIcon} />
+                <img className="h-6 w-6" src={InstagramIcon} alt="Instagram" />
                 <span>Instagram</span>
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
                 href="https://www.linkedin.com/in/shoaibhuq"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+                whileHover={{ scale: 1.05 }}
               >
-                <img className="h-6 w-6" src={LinkedinIcon} />
+                <img className="h-6 w-6" src={LinkedinIcon} alt="LinkedIn" />
                 <span>LinkedIn</span>
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
                 href="https://github.com/shoaibhuq"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-x-4 rounded-lg bg-gray-800/50 px-6 py-4 text-white hover:bg-gray-700/50 transition-colors duration-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                whileHover={{ scale: 1.05 }}
               >
-                <img className="h-6 w-6" src={GithubIcon} />
+                <img className="h-6 w-6" src={GithubIcon} alt="GitHub" />
                 <span>GitHub</span>
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
                 href={shoaib_resume}
                 download
                 className="flex items-center gap-x-4 rounded-lg bg-blue-600/50 px-6 py-4 text-white hover:bg-blue-500/50 transition-colors duration-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+                whileHover={{ scale: 1.05 }}
               >
                 <ArrowDownTrayIcon className="h-6 w-6" />
                 <span>Download Resume</span>
-              </a>
+              </motion.a>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
