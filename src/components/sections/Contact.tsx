@@ -88,8 +88,8 @@ export default function Contact() {
                   />
                 </dt>
                 <dd>
-                  <a href="tel:+1 (469) 544-8878" className="hover:text-white">
-                    +1 (469) 544-8878
+                  <a href="tel:+1 (469) 389-0421" className="hover:text-white">
+                    +1 (469) 389-0421
                   </a>
                 </dd>
               </div>
