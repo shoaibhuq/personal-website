@@ -71,6 +71,8 @@ export default function Footer() {
             <a
               key={item.name}
               href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-200"
             >
               <span className="sr-only">{item.name}</span>
@@ -80,7 +82,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
           <p className="text-center text-xs leading-5 text-gray-500">
-            Shoaib Huq - Built with Love ❤️.
+            © {new Date().getFullYear()} Shoaib Huq - Built with Love ❤️.
           </p>
         </div>
       </div>

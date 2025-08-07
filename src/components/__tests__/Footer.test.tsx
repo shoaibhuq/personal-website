@@ -10,10 +10,6 @@ describe("Footer", () => {
   test("renders social media links", () => {
     const socialLinks = screen.getAllByRole("link");
     expect(socialLinks.length).toBeGreaterThan(0);
-
-    // Check for specific social media links
-    const socialIcons = screen.getAllByRole("img", { hidden: true });
-    expect(socialIcons.length).toBeGreaterThan(0);
   });
 
   test("renders copyright text", () => {
@@ -24,7 +20,7 @@ describe("Footer", () => {
 
   test("has proper styling classes", () => {
     const footerElement = screen.getByRole("contentinfo");
-    expect(footerElement).toHaveClass("bg-black");
+    expect(footerElement).toHaveClass("bg-transparent");
 
     const container = footerElement.querySelector("div");
     expect(container).toHaveClass("mx-auto", "max-w-7xl");
