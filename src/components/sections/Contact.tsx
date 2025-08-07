@@ -9,7 +9,7 @@ import {
 
 import { motion } from "framer-motion";
 
-import LinkedinIcon from "../../assets/social-icons/svg/Color/LinkedIN.svg";
+import LinkedInIcon from "../../assets/social-icons/svg/Color/LinkedIn.svg";
 import InstagramIcon from "../../assets/social-icons/svg/Color/Instagram.svg";
 import GithubIcon from "../../assets/social-icons/svg/Color/Github.svg";
 import shoaib_resume from "../../assets/Contact/shoaib_resume.pdf";
@@ -159,7 +159,7 @@ export default function Contact() {
                 transition={{ duration: 0.3, delay: 0.3 }}
                 whileHover={{ scale: 1.05 }}
               >
-                <img className="h-6 w-6" src={LinkedinIcon} alt="LinkedIn" />
+                <img className="h-6 w-6" src={LinkedInIcon} alt="LinkedIn" />
                 <span>LinkedIn</span>
               </motion.a>
 
