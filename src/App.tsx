@@ -6,6 +6,7 @@ import Contact from "./components/sections/Contact";
 import NotFound from "./components/sections/NotFound";
 import TrashToss from "./components/ui/TrashToss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -53,6 +54,7 @@ function App() {
         {/* Trash Toss mini-game — fixed bottom bar, visible on every route */}
         <TrashToss />
       </BrowserRouter>
+      <SpeedInsights />
     </>
   );
 }
