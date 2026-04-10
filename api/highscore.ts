@@ -7,7 +7,7 @@
 // GET  /api/highscore                 -> { highScore: number }
 // POST /api/highscore  { score }      -> { highScore: number, updated: boolean }
 
-type Handler = (req: Request) => Promise<Response>;
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const KEY = "trash-toss:highscore";
 
@@ -15,10 +15,9 @@ const KEY = "trash-toss:highscore";
 // instance, which is enough for a casual portfolio game.
 let memoryHighScore = 0;
 
-const kvUrl = process.env.KV_REST_API_URL;
-const kvToken = process.env.KV_REST_API_TOKEN;
-
 async function kvGet(): Promise<number | null> {
+  const kvUrl = process.env.KV_REST_API_URL;
+  const kvToken = process.env.KV_REST_API_TOKEN;
   if (!kvUrl || !kvToken) return null;
   try {
     const res = await fetch(`${kvUrl}/get/${encodeURIComponent(KEY)}`, {
@@ -35,6 +34,8 @@ async function kvGet(): Promise<number | null> {
 }
 
 async function kvSet(value: number): Promise<boolean> {
+  const kvUrl = process.env.KV_REST_API_URL;
+  const kvToken = process.env.KV_REST_API_TOKEN;
   if (!kvUrl || !kvToken) return false;
   try {
     const res = await fetch(
@@ -67,42 +68,38 @@ async function writeHighScore(score: number): Promise<number> {
   return score;
 }
 
-const json = (body: unknown, status = 200): Response =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "content-type": "application/json",
-      "cache-control": "no-store",
-    },
-  });
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  res.setHeader("cache-control", "no-store");
 
-const handler: Handler = async (req) => {
   if (req.method === "GET") {
     const highScore = await readHighScore();
-    return json({ highScore });
+    res.status(200).json({ highScore });
+    return;
   }
 
   if (req.method === "POST") {
-    let score = 0;
-    try {
-      const body = (await req.json()) as { score?: unknown };
-      score = typeof body.score === "number" ? Math.floor(body.score) : 0;
-    } catch {
-      return json({ error: "invalid body" }, 400);
-    }
+    // Vercel's Node runtime auto-parses JSON bodies when the content-type is
+    // application/json, exposing the result on req.body.
+    const body = (req.body ?? {}) as { score?: unknown };
+    const raw =
+      typeof body.score === "number"
+        ? body.score
+        : typeof body.score === "string"
+        ? parseFloat(body.score)
+        : NaN;
+    const score = Math.floor(raw);
     if (!Number.isFinite(score) || score < 0 || score > 1_000_000) {
-      return json({ error: "invalid score" }, 400);
+      res.status(400).json({ error: "invalid score" });
+      return;
     }
     const before = await readHighScore();
     const highScore = await writeHighScore(score);
-    return json({ highScore, updated: highScore > before });
+    res.status(200).json({ highScore, updated: highScore > before });
+    return;
   }
 
-  return json({ error: "method not allowed" }, 405);
-};
-
-export default handler;
-
-// Vercel's Node runtime also accepts the legacy (req, res) signature.
-// Provide a compatible wrapper so this file works with either style.
-export const config = { runtime: "edge" as const };
+  res.status(405).json({ error: "method not allowed" });
+}
