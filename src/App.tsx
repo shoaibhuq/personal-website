@@ -5,6 +5,7 @@ import Photography from "./components/sections/Photography";
 import Contact from "./components/sections/Contact";
 import NotFound from "./components/sections/NotFound";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -50,6 +51,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </BrowserRouter>
+      <SpeedInsights />
     </>
   );
 }
