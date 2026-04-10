@@ -3,19 +3,35 @@ import driverAdv from "../../assets/Projects/driver-adv.png";
 import healthify from "../../assets/Projects/healthify.png";
 
 import { motion } from "motion/react";
+import { ArrowUpRight, Briefcase, Crown } from "lucide-react";
+import type { ComponentType } from "react";
 
-import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
+import SpotlightCard from "../ui/SpotlightCard";
 
-const posts = [
+type Project = {
+  id: number;
+  name: string;
+  href: string;
+  type: string;
+  description: string;
+  imageUrl: string | null;
+  placeholderIcon?: ComponentType<{ className?: string }>;
+  placeholderGradient?: string;
+  date: string;
+  tags: string[];
+};
+
+const posts: Project[] = [
   {
     id: 1,
     name: "Routora Mobile App",
     href: "https://www.routora.com/app-install",
     type: "Mobile App",
     description:
-      "Routora is a cross-platform mobile app designed to optimize multi-stop routes, making driving more efficient for users worldwide. With over 25,000 users in 70+ countries—including Amazon drivers, realtors, and small business owners—Routora has helped save more than 1 million miles on the road.",
+      "Cross-platform mobile app that optimizes multi-stop routes. 25,000+ users in 70+ countries — including Amazon drivers, realtors, and small business owners — have saved over 1 million miles on the road.",
     imageUrl: routoraMobile,
-    date: "Dec 2022 - Present",
+    date: "Dec 2022 – Present",
+    tags: ["React Native", "Firebase", "Google Maps"],
   },
   {
     id: 2,
@@ -23,19 +39,47 @@ const posts = [
     href: "https://youtu.be/tX4mBHLCjjc",
     type: "Mobile App",
     description:
-      "A mobile app that uses an in-house trained machine learning model to recognize and communicate street signs to users to help make the driving experience safer.",
+      "Mobile app that uses an in-house trained machine learning model to recognize and communicate street signs to drivers, making the road safer in real time.",
     imageUrl: driverAdv,
     date: "Nov 2022",
+    tags: ["TensorFlow", "Flutter", "Computer Vision"],
   },
   {
-    id: 2,
+    id: 3,
     name: "Healthify",
     href: "https://youtu.be/FmwPfB-qPRg?t=41",
     type: "Mobile App",
     description:
-      "A mobile healthcare application that provides a more engaging take on telemedicine through augmented reality assistance.",
+      "Healthcare mobile application that offers a more engaging take on telemedicine through augmented reality assistance.",
     imageUrl: healthify,
     date: "Nov 2023",
+    tags: ["ARKit", "Swift", "HealthKit"],
+  },
+  {
+    id: 4,
+    name: "Wells Fargo — SWE",
+    href: "https://www.linkedin.com/in/shoaibhuq/",
+    type: "Professional",
+    description:
+      "Software engineering role at Wells Fargo — building and maintaining enterprise-grade services in a large-scale production environment.",
+    imageUrl: null,
+    placeholderIcon: Briefcase,
+    placeholderGradient: "from-red-900/40 via-amber-900/30 to-yellow-800/20",
+    date: "2024 – Present",
+    tags: ["Java", "Spring", "AWS"],
+  },
+  {
+    id: 5,
+    name: "AR Chess @ UTD Plaza",
+    href: "https://github.com/shoaibhuq",
+    type: "AR Experience",
+    description:
+      "Life-size, three-dimensional augmented reality chess experience designed for the UTD chess plaza. Play on the real plaza with virtual pieces tracked in AR.",
+    imageUrl: null,
+    placeholderIcon: Crown,
+    placeholderGradient: "from-indigo-900/40 via-purple-900/30 to-fuchsia-800/20",
+    date: "2023",
+    tags: ["Unity", "ARKit", "C#"],
   },
 ];
 
@@ -43,10 +87,9 @@ export default function Projects() {
   const titleWords = "Projects".split("");
 
   return (
-    <>
-      <motion.div
-        id="projects"
-        className="text-gray-200 my-10 text-center font-bold text-5xl tracking-tight flex justify-center"
+    <section id="projects" className="py-16 sm:py-20">
+      <motion.h2
+        className="text-gray-200 mb-10 sm:mb-14 text-center font-bold text-4xl sm:text-5xl tracking-tight flex justify-center"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
@@ -71,76 +114,99 @@ export default function Projects() {
             {letter}
           </motion.span>
         ))}
-      </motion.div>
-      <div className="relative bg-black mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      </motion.h2>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ul
           role="list"
-          className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-hidden place-items-center"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
         >
-          {posts.map((post, index) => (
-            <motion.li
-              key={post.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: [0.16, 0.77, 0.47, 0.97],
-              }}
-              className="col-span-1 flex flex-col text-center w-full"
-            >
-              <CardContainer className="inter-var">
-                <CardBody className="bg-slate-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full max-w-sm sm:max-w-md rounded-xl p-6 border h-auto">
-                  <CardItem
-                    translateZ="50"
-                    className="text-xl font-bold text-neutral-600 dark:text-white"
-                  >
-                    {post.name}
-                  </CardItem>
-                  <CardItem
-                    as="p"
-                    translateZ="60"
-                    className="text-neutral-500 h-auto text-sm mt-2 dark:text-neutral-300"
-                  >
-                    {post.description}
-                  </CardItem>
-                  <CardItem translateZ="100" className="w-full mt-4">
-                    <motion.img
-                      src={post.imageUrl}
-                      height="1000"
-                      width="1000"
-                      className="mx-auto object-contain h-64 w-auto rounded-lg group-hover/card:shadow-xl"
-                      alt="thumbnail"
-                      initial={{ scale: 0.9 }}
-                      whileInView={{ scale: 1 }}
-                      transition={{ duration: 0.4, delay: 0.2 }}
-                    />
-                  </CardItem>
-                  <div className="flex justify-between items-center mt-8">
-                    <CardItem
-                      translateZ={20}
-                      href="https://twitter.com/mannupaaji"
-                      target="__blank"
-                      className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
-                    >
-                      {post.type}
-                    </CardItem>
-                    <CardItem
-                      translateZ={20}
-                      as="a"
-                      href={post.href}
-                      className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-                    >
-                      Check it out!
-                    </CardItem>
+          {posts.map((post, index) => {
+            const PlaceholderIcon = post.placeholderIcon;
+            return (
+              <motion.li
+                key={post.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.08,
+                  ease: [0.16, 0.77, 0.47, 0.97],
+                }}
+                className="h-full"
+              >
+                <SpotlightCard
+                  className="h-full flex flex-col !p-5 sm:!p-6"
+                  spotlightColor="rgba(16, 185, 129, 0.15)"
+                >
+                  {/* Image */}
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-neutral-950/60 border border-white/5 mb-5">
+                    {post.imageUrl ? (
+                      <img
+                        src={post.imageUrl}
+                        alt={`${post.name} preview`}
+                        className="absolute inset-0 w-full h-full object-contain p-4"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div
+                        className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${
+                          post.placeholderGradient ??
+                          "from-neutral-800 to-neutral-900"
+                        }`}
+                      >
+                        {PlaceholderIcon && (
+                          <PlaceholderIcon className="h-16 w-16 text-white/80" />
+                        )}
+                      </div>
+                    )}
                   </div>
-                </CardBody>
-              </CardContainer>
-            </motion.li>
-          ))}
+
+                  {/* Title + date */}
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-white leading-tight">
+                      {post.name}
+                    </h3>
+                    <span className="text-[10px] sm:text-xs font-medium text-emerald-400/90 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
+                      {post.type}
+                    </span>
+                  </div>
+                  <p className="text-xs text-neutral-400 mb-3">{post.date}</p>
+
+                  {/* Description */}
+                  <p className="text-sm text-neutral-300 leading-relaxed mb-4 flex-1">
+                    {post.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[11px] font-medium text-neutral-300 bg-white/5 border border-white/10 rounded-full px-2.5 py-1"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <a
+                    href={post.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/cta inline-flex items-center justify-between gap-2 mt-auto py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-semibold text-white transition-colors min-h-[44px]"
+                  >
+                    <span>View Project</span>
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+                  </a>
+                </SpotlightCard>
+              </motion.li>
+            );
+          })}
         </ul>
       </div>
-    </>
+    </section>
   );
 }
