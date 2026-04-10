@@ -5,7 +5,7 @@ import {
   useTransform,
   useSpring,
   MotionValue,
-} from "framer-motion";
+} from "motion/react";
 import { Link } from "react-router-dom";
 import {
   EnvelopeIcon,
@@ -98,17 +98,56 @@ export default function Photography() {
 }
 
 const Header = () => {
+  const line1Words = "Capturing Moments".split(" ");
+  const line2Words = "That Last Forever".split(" ");
+
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
-      <h1 className="text-4xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-        Capturing Moments
+      <motion.h1
+        className="text-4xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+      >
+        <span className="flex flex-wrap gap-x-4">
+          {line1Words.map((word, i) => (
+            <motion.span
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+                show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 80, damping: 20 } },
+              }}
+            >
+              {word}
+            </motion.span>
+          ))}
+        </span>
         <br />
-        That Last Forever
-      </h1>
-      <p className="max-w-2xl text-lg md:text-xl mt-8 text-gray-300">
+        <span className="flex flex-wrap gap-x-4">
+          {line2Words.map((word, i) => (
+            <motion.span
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+                show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 80, damping: 20 } },
+              }}
+            >
+              {word}
+            </motion.span>
+          ))}
+        </span>
+      </motion.h1>
+      <motion.p
+        className="max-w-2xl text-lg md:text-xl mt-8 text-gray-300"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+      >
         Professional photography services for graduation, portraits, weddings
         and special events. Let's create timeless memories together.
-      </p>
+      </motion.p>
     </div>
   );
 };
@@ -130,18 +169,21 @@ const PhotoCard = ({
       }}
       whileHover={{
         y: -20,
+        scale: 1.02,
+        transition: { type: "spring", stiffness: 300, damping: 20 },
       }}
       key={photo.title}
       className="group/photo h-96 w-[30rem] relative flex-shrink-0"
     >
-      <div className="block group-hover/photo:shadow-2xl transition-shadow">
+      <div className="block group-hover/photo:shadow-2xl group-hover/photo:shadow-purple-500/20 transition-shadow duration-300">
         <img
           src={photo.thumbnail}
-          className="object-cover object-center absolute h-full w-full inset-0 rounded-xl border-2 border-purple-900/50"
+          className="object-cover object-center absolute h-full w-full inset-0 rounded-xl border-2 border-purple-900/50 group-hover/photo:border-purple-500/70 transition-colors duration-300"
           alt={photo.title}
         />
       </div>
-      <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/photo:opacity-100 text-white font-medium text-lg backdrop-blur-sm bg-black/30 px-4 py-2 rounded-lg">
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300" />
+      <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/photo:opacity-100 text-white font-medium text-lg backdrop-blur-sm bg-black/30 px-4 py-2 rounded-lg transition-all duration-300 translate-y-2 group-hover/photo:translate-y-0">
         {photo.title}
       </h2>
     </motion.div>
