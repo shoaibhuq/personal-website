@@ -10,6 +10,9 @@ import { CalendarDaysIcon, PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/o
 
 import SpotlightCard from "../ui/SpotlightCard";
 import BookingModal from "../ui/BookingModal";
+import Aurora from "../ui/Aurora";
+import RotatingText from "../ui/RotatingText";
+import TravelMap from "../ui/TravelMap";
 
 import photo1 from "../../assets/Photography/photo1.jpg";
 import photo2 from "../../assets/Photography/photo2.jpg";
@@ -86,6 +89,7 @@ export default function Photography() {
       <Hero onBook={() => setBookingOpen(true)} />
       <ServicesStrip />
       {isDesktop ? <ParallaxGallery /> : <MobileGallery />}
+      <TravelMap />
       <ScheduleCTA onBook={() => setBookingOpen(true)} />
       <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </div>
@@ -99,115 +103,249 @@ const Hero = ({ onBook }: { onBook: () => void }) => {
   const line2 = "That Last Forever".split(" ");
 
   return (
-    <section className="relative isolate overflow-hidden px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-20 sm:pb-28">
-      {/* Decorative blobs */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 sm:h-[28rem] sm:w-[28rem] rounded-full bg-purple-600/20 blur-3xl animate-pulse"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-1/3 -right-24 h-64 w-64 sm:h-96 sm:w-96 rounded-full bg-pink-500/20 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-1/3 h-48 w-48 sm:h-72 sm:w-72 rounded-full bg-fuchsia-500/10 blur-3xl"
-      />
+    <section className="relative isolate overflow-hidden px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-16 sm:pb-24">
+      {/* React Bits-style aurora background */}
+      <Aurora />
 
-      <div className="max-w-6xl mx-auto relative">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-purple-200 backdrop-blur-sm mb-6"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-purple-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-purple-400" />
-          </span>
-          Now booking sessions
-        </motion.div>
+      <div className="max-w-7xl mx-auto relative">
+        <div className="grid lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-16 items-center">
+          {/* Left — content */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-purple-200 backdrop-blur-sm mb-6"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-purple-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-purple-400" />
+              </span>
+              Now booking sessions
+            </motion.div>
 
-        <motion.h1
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight bg-gradient-to-br from-white via-purple-200 to-pink-400 bg-clip-text text-transparent"
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
-          }}
-        >
-          <span className="flex flex-wrap gap-x-3 sm:gap-x-4">
-            {line1.map((word, i) => (
-              <motion.span
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
-                  show: {
-                    opacity: 1,
-                    y: 0,
-                    filter: "blur(0px)",
-                    transition: { type: "spring", stiffness: 80, damping: 20 },
-                  },
-                }}
+            <motion.h1
+              className="text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight bg-gradient-to-br from-white via-purple-200 to-pink-400 bg-clip-text text-transparent"
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: {},
+                show: {
+                  transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+                },
+              }}
+            >
+              <span className="flex flex-wrap gap-x-3 sm:gap-x-4">
+                {line1.map((word, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{
+                      hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+                      show: {
+                        opacity: 1,
+                        y: 0,
+                        filter: "blur(0px)",
+                        transition: {
+                          type: "spring",
+                          stiffness: 80,
+                          damping: 20,
+                        },
+                      },
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
+              <span className="flex flex-wrap gap-x-3 sm:gap-x-4">
+                {line2.map((word, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{
+                      hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+                      show: {
+                        opacity: 1,
+                        y: 0,
+                        filter: "blur(0px)",
+                        transition: {
+                          type: "spring",
+                          stiffness: 80,
+                          damping: 20,
+                        },
+                      },
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
+            </motion.h1>
+
+            {/* Rotating tagline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="mt-5 sm:mt-7 flex flex-wrap items-center gap-x-2 gap-y-1 text-xl sm:text-2xl md:text-3xl font-semibold text-white/90"
+            >
+              <span>Specializing in</span>
+              <RotatingText
+                texts={[
+                  "weddings",
+                  "graduations",
+                  "portraits",
+                  "engagements",
+                  "events",
+                ]}
+                mainClassName="inline-flex overflow-hidden rounded-lg bg-gradient-to-r from-purple-600/90 to-pink-600/90 px-3 py-1 text-white shadow-lg shadow-purple-900/40"
+                staggerFrom="last"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.018}
+                splitLevelClassName="overflow-hidden"
+                transition={{ type: "spring", damping: 28, stiffness: 320 }}
+                rotationInterval={2400}
+              />
+            </motion.div>
+
+            <motion.p
+              className="max-w-xl text-base sm:text-lg mt-6 text-gray-300/90 leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+            >
+              Professional photography for weddings, portraits, graduation, and
+              special events. Let's create timeless memories together.
+            </motion.p>
+
+            <motion.div
+              className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.05 }}
+            >
+              <button
+                type="button"
+                onClick={onBook}
+                className="group inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[52px] px-7 rounded-full text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg shadow-purple-900/40 hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-          <span className="flex flex-wrap gap-x-3 sm:gap-x-4">
-            {line2.map((word, i) => (
-              <motion.span
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
-                  show: {
-                    opacity: 1,
-                    y: 0,
-                    filter: "blur(0px)",
-                    transition: { type: "spring", stiffness: 80, damping: 20 },
-                  },
-                }}
+                <CalendarDaysIcon className="h-5 w-5" />
+                Book a Session
+              </button>
+              <a
+                href="#gallery"
+                className="inline-flex items-center justify-center w-full sm:w-auto min-h-[52px] px-7 rounded-full text-sm sm:text-base font-semibold text-white/90 border border-white/15 bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-colors"
               >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-        </motion.h1>
+                View Gallery
+              </a>
+            </motion.div>
+          </div>
 
-        <motion.p
-          className="max-w-2xl text-base sm:text-lg md:text-xl mt-6 sm:mt-8 text-gray-300/90 leading-relaxed"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
-          Professional photography for weddings, portraits, graduation, and
-          special events. Let's create timeless memories together.
-        </motion.p>
-
-        <motion.div
-          className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1 }}
-        >
-          <button
-            type="button"
-            onClick={onBook}
-            className="group inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[52px] px-7 rounded-full text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg shadow-purple-900/40 hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
+          {/* Right — orbital showcase card (fills the empty space) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
+            className="hidden lg:block relative h-[420px] xl:h-[480px]"
           >
-            <CalendarDaysIcon className="h-5 w-5" />
-            Book a Session
-          </button>
-          <a
-            href="#gallery"
-            className="inline-flex items-center justify-center w-full sm:w-auto min-h-[52px] px-7 rounded-full text-sm sm:text-base font-semibold text-white/90 border border-white/15 bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-colors"
-          >
-            View Gallery
-          </a>
-        </motion.div>
+            <OrbitalShowcase />
+          </motion.div>
+        </div>
       </div>
     </section>
+  );
+};
+
+/* ---------- Orbital Showcase (hero right side) ---------- */
+
+const orbitStats = [
+  { label: "Sessions", value: "120+", accent: "from-purple-500 to-fuchsia-500" },
+  { label: "Countries", value: "6", accent: "from-pink-500 to-rose-500" },
+  { label: "Years", value: "5", accent: "from-indigo-500 to-purple-500" },
+  { label: "Smiles", value: "∞", accent: "from-fuchsia-500 to-pink-500" },
+];
+
+const OrbitalShowcase = () => {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      {/* Rotating conic ring */}
+      <motion.div
+        aria-hidden
+        className="absolute inset-8 rounded-full"
+        style={{
+          background:
+            "conic-gradient(from 0deg, rgba(168,85,247,0.0), rgba(168,85,247,0.6), rgba(236,72,153,0.6), rgba(168,85,247,0.0))",
+          mask: "radial-gradient(circle, transparent 55%, black 57%, black 60%, transparent 62%)",
+          WebkitMask:
+            "radial-gradient(circle, transparent 55%, black 57%, black 60%, transparent 62%)",
+        }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      />
+
+      {/* Dashed static ring */}
+      <div
+        aria-hidden
+        className="absolute inset-16 rounded-full border border-dashed border-white/15"
+      />
+
+      {/* Inner glowing core */}
+      <motion.div
+        className="relative h-48 w-48 xl:h-56 xl:w-56 rounded-full bg-gradient-to-br from-purple-600 via-fuchsia-600 to-pink-600 shadow-[0_0_80px_rgba(168,85,247,0.45)] flex flex-col items-center justify-center"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      >
+        {/* Inner ring */}
+        <div className="absolute inset-2 rounded-full border border-white/20" />
+        <div className="absolute inset-4 rounded-full border border-white/10" />
+        <span className="text-white/90 text-xs font-medium uppercase tracking-[0.2em]">
+          Shoaib Huq
+        </span>
+        <span className="mt-1 text-white text-2xl xl:text-3xl font-bold">
+          Photography
+        </span>
+        <span className="mt-1 text-white/70 text-[11px] tracking-wider uppercase">
+          est. 2020
+        </span>
+      </motion.div>
+
+      {/* Orbiting stat chips */}
+      {orbitStats.map((stat, i) => {
+        const angle = (i / orbitStats.length) * Math.PI * 2;
+        const radius = 170;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        return (
+          <motion.div
+            key={stat.label}
+            className="absolute"
+            style={{ left: "50%", top: "50%" }}
+            animate={{
+              x: [x, x + 8, x],
+              y: [y, y - 8, y],
+            }}
+            transition={{
+              duration: 5 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3,
+            }}
+          >
+            <div className="-translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md px-4 py-2.5 shadow-xl shadow-purple-900/30">
+              <div
+                className={`text-lg font-bold bg-gradient-to-r ${stat.accent} bg-clip-text text-transparent`}
+              >
+                {stat.value}
+              </div>
+              <div className="text-[10px] uppercase tracking-wider text-gray-400 text-center">
+                {stat.label}
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
   );
 };
 
