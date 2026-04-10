@@ -7,6 +7,8 @@ import img5 from "../../assets/AboutMe/about5.jpg";
 
 import { motion } from "motion/react";
 
+import TravelMap from "../ui/TravelMap";
+
 const AboutMe = () => {
   const containerVariant = {
     hidden: {},
@@ -138,7 +140,7 @@ const AboutMe = () => {
                 >
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                   <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md hover:bg-slate-900/25 bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-                    <a href="#projects">See my work!</a>
+                    <a href="#projects-all">See my work!</a>
                   </span>
                 </motion.button>
               </motion.div>
@@ -206,6 +208,9 @@ const AboutMe = () => {
           </div>
         </div>
       </div>
+
+      {/* Places I've been — travel map */}
+      <TravelMap />
     </div>
   );
 };

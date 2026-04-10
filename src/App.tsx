@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import Photography from "./components/sections/Photography";
 import Contact from "./components/sections/Contact";
 import NotFound from "./components/sections/NotFound";
+import TrashToss from "./components/ui/TrashToss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
@@ -50,6 +51,8 @@ function App() {
           <Route path="/photography" element={<Photography />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
+        {/* Trash Toss mini-game — fixed bottom bar, visible on every route */}
+        <TrashToss />
       </BrowserRouter>
       <SpeedInsights />
     </>

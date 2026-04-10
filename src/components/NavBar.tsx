@@ -13,7 +13,9 @@ type NavigationItem = {
 
 const navigation: NavigationItem[] = [
   { name: "About Me", href: "/#about" },
-  { name: "Projects", href: "/#projects" },
+  // Skip directly to the grid so visitors see every project at once, rather
+  // than landing in the scroll-driven folder stack.
+  { name: "Projects", href: "/#projects-all" },
   { name: "Contact Me", link: "/contact" },
   { name: "Photography", link: "/photography" },
 ];
