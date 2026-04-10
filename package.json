@@ -54,6 +54,7 @@
     "@types/react-google-recaptcha": "^2.1.9",
     "@types/react-simple-maps": "^3.0.6",
     "@types/three": "^0.183.1",
+    "@vercel/node": "^5.7.3",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "csstype": "^3.1.3",
