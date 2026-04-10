@@ -40,14 +40,38 @@ const posts = [
 ];
 
 export default function Projects() {
+  const titleWords = "Projects".split("");
+
   return (
     <>
-      <div
+      <motion.div
         id="projects"
-        className="text-gray-200 my-10 text-center font-bold text-5xl tracking-tight"
+        className="text-gray-200 my-10 text-center font-bold text-5xl tracking-tight flex justify-center"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={{
+          hidden: {},
+          show: { transition: { staggerChildren: 0.05 } },
+        }}
       >
-        Projects
-      </div>
+        {titleWords.map((letter, i) => (
+          <motion.span
+            key={i}
+            variants={{
+              hidden: { opacity: 0, y: 40, rotateX: -90 },
+              show: {
+                opacity: 1,
+                y: 0,
+                rotateX: 0,
+                transition: { type: "spring", stiffness: 100, damping: 12 },
+              },
+            }}
+          >
+            {letter}
+          </motion.span>
+        ))}
+      </motion.div>
       <div className="relative bg-black mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ul
           role="list"

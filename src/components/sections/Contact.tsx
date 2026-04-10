@@ -7,7 +7,7 @@ import {
   ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import LinkedInIcon from "../../assets/social-icons/svg/Color/LinkedIn.svg";
 import InstagramIcon from "../../assets/social-icons/svg/Color/Instagram.svg";
@@ -65,11 +65,21 @@ export default function Contact() {
                 />
               </div>
             </div>
-            <h2 className="text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+            <motion.h2
+              className="text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 0.77, 0.47, 0.97] }}
+            >
               Get in touch
-            </h2>
+            </motion.h2>
             <dl className="mt-10 space-y-4 text-base/7 text-gray-300">
-              <div className="flex gap-x-4">
+              <motion.div
+                className="flex gap-x-4"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+              >
                 <dt className="flex-none">
                   <span className="sr-only">Address</span>
                   <BuildingOffice2Icon
@@ -78,8 +88,13 @@ export default function Contact() {
                   />
                 </dt>
                 <dd>Dallas, TX</dd>
-              </div>
-              <div className="flex gap-x-4">
+              </motion.div>
+              <motion.div
+                className="flex gap-x-4"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+              >
                 <dt className="flex-none">
                   <span className="sr-only">Telephone</span>
                   <PhoneIcon
@@ -92,8 +107,13 @@ export default function Contact() {
                     +1 (469) 389-0421
                   </a>
                 </dd>
-              </div>
-              <div className="flex gap-x-4">
+              </motion.div>
+              <motion.div
+                className="flex gap-x-4"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+              >
                 <dt className="flex-none">
                   <span className="sr-only">Email</span>
                   <EnvelopeIcon
@@ -109,7 +129,7 @@ export default function Contact() {
                     huq.shoaib@gmail.com
                   </a>
                 </dd>
-              </div>
+              </motion.div>
             </dl>
           </div>
         </div>

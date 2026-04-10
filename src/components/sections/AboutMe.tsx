@@ -5,27 +5,48 @@ import img3 from "../../assets/AboutMe/about3.jpg";
 import img4 from "../../assets/AboutMe/about4.jpg";
 import img5 from "../../assets/AboutMe/about5.jpg";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const AboutMe = () => {
-  // 1. Define your container and item variants
   const containerVariant = {
     hidden: {},
     show: {
       transition: {
-        staggerChildren: 0.2, // Adjust to control the delay between images
+        staggerChildren: 0.15,
       },
     },
   };
 
   const itemVariant = {
-    hidden: { x: 100, opacity: 0 },
+    hidden: { x: 100, opacity: 0, scale: 0.9 },
     show: {
       x: 0,
       opacity: 1,
+      scale: 1,
       transition: { type: "spring", stiffness: 60, damping: 15 },
     },
   };
+
+  const textContainerVariant = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const wordVariant = {
+    hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 80, damping: 20 },
+    },
+  };
+
+  const headingWords = "Hi, I'm Shoaib 👋🏽".split(" ");
 
   return (
     <div id="about" className="relative isolate">
@@ -75,10 +96,26 @@ const AboutMe = () => {
         <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
           <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
             <div className="relative w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-200 sm:text-6xl">
-                Hi, I&apos;m Shoaib 👋🏽
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-300 sm:max-w-md lg:max-w-none">
+              <motion.h1
+                className="text-4xl font-bold tracking-tight text-gray-200 sm:text-6xl flex flex-wrap gap-x-3"
+                variants={textContainerVariant}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
+                {headingWords.map((word, i) => (
+                  <motion.span key={i} variants={wordVariant}>
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.h1>
+              <motion.p
+                className="mt-6 text-lg leading-8 text-gray-300 sm:max-w-md lg:max-w-none"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
                 I am a Dallas, TX based <b>software engineer</b> with a passion
                 for <b>mobile application development/design.</b> I also love
                 doing <b>photography and videography</b> in my free time.
@@ -86,15 +123,25 @@ const AboutMe = () => {
                 at Dallas. I have worked on a variety of mobile applications to
                 web applications and I am always looking for new opportunities
                 to learn and grow!
-              </p>
-              <div className="mt-10 flex items-center gap-x-6">
-                <button className="relative inline-flex h-12 overflow-hidden rounded-md p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slae-50">
+              </motion.p>
+              <motion.div
+                className="mt-10 flex items-center gap-x-6"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.7, type: "spring", stiffness: 200 }}
+              >
+                <motion.button
+                  className="relative inline-flex h-12 overflow-hidden rounded-md p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slae-50"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                   <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md hover:bg-slate-900/25 bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
                     <a href="#projects">See my work!</a>
                   </span>
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             </div>
 
             {/* Parent motion.div controlling the stagger */}
@@ -106,7 +153,7 @@ const AboutMe = () => {
               viewport={{ once: true }}
             >
               <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
-                <motion.div variants={itemVariant} className="relative">
+                <motion.div variants={itemVariant} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="relative">
                   <img
                     src={img1}
                     alt="shoaib with camera"
@@ -117,7 +164,7 @@ const AboutMe = () => {
               </div>
 
               <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
-                <motion.div variants={itemVariant} className="relative">
+                <motion.div variants={itemVariant} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="relative">
                   <img
                     src={img2}
                     alt=""
@@ -126,7 +173,7 @@ const AboutMe = () => {
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
                 </motion.div>
 
-                <motion.div variants={itemVariant} className="relative">
+                <motion.div variants={itemVariant} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="relative">
                   <img
                     src={img3}
                     alt=""
@@ -137,7 +184,7 @@ const AboutMe = () => {
               </div>
 
               <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
-                <motion.div variants={itemVariant} className="relative">
+                <motion.div variants={itemVariant} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="relative">
                   <img
                     src={img4}
                     alt=""
@@ -146,7 +193,7 @@ const AboutMe = () => {
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
                 </motion.div>
 
-                <motion.div variants={itemVariant} className="relative">
+                <motion.div variants={itemVariant} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="relative">
                   <img
                     src={img5}
                     alt=""
