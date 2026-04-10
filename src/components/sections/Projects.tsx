@@ -1,16 +1,9 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import routoraMobile from "../../assets/Projects/routora.png";
 import driverAdv from "../../assets/Projects/driver-adv.png";
 import healthify from "../../assets/Projects/healthify.png";
 
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight,
   Briefcase,
@@ -26,6 +19,7 @@ import {
 import type { ComponentType } from "react";
 
 import SpotlightCard from "../ui/SpotlightCard";
+import ScrollStack, { ScrollStackItem } from "../ui/ScrollStack";
 
 type Project = {
   id: number;
@@ -283,202 +277,6 @@ function ProjectCardCompact({ post }: { post: Project }) {
   );
 }
 
-/* ------------------- scroll-driven folder stack ------------------- */
-
-/**
- * A single card in the ScrollStack. Takes a shared `scrollProgress`
- * MotionValue and its own `index` and computes a "relative position" in the
- * stack that continuously animates as the user scrolls. This lets every card
- * fan out, tilt, and fly off one at a time — like flipping through physical
- * file folders — without touching state on every scroll event.
- */
-function ScrollStackCard({
-  post,
-  index,
-  total,
-  scrollProgress,
-}: {
-  post: Project;
-  index: number;
-  total: number;
-  scrollProgress: MotionValue<number>;
-}) {
-  // activeIndex ranges from 0 → (total - 1). relPos is 0 when this card is
-  // the top of the stack, positive when it's still behind, negative when
-  // it's been "flipped away". Use a small overscan on each end so the first
-  // card actually starts in focus and the last one rests at the end.
-  const relPos = useTransform(scrollProgress, (v) => {
-    const clamped = Math.max(0, Math.min(1, v));
-    return index - clamped * (total - 1);
-  });
-
-  const x = useTransform(relPos, (p) => {
-    if (p >= 0) return 0;
-    // Slide out to the right like a physical folder.
-    const t = Math.min(1, -p);
-    return t * 650;
-  });
-
-  const y = useTransform(relPos, (p) => {
-    if (p < 0) {
-      const t = Math.min(1, -p);
-      return t * -40;
-    }
-    // Cards still in the stack peek from behind, anchored at the bottom.
-    const p2 = Math.min(p, 4);
-    return p2 * 14;
-  });
-
-  const rotate = useTransform(relPos, (p) => {
-    if (p < 0) {
-      const t = Math.min(1, -p);
-      return t * -18;
-    }
-    const p2 = Math.min(p, 4);
-    return p2 * -3;
-  });
-
-  const scale = useTransform(relPos, (p) => {
-    if (p < 0) {
-      const t = Math.min(1, -p);
-      return 1 - t * 0.15;
-    }
-    const p2 = Math.min(p, 4);
-    return 1 - p2 * 0.055;
-  });
-
-  const opacity = useTransform(relPos, (p) => {
-    if (p < -1) return 0;
-    if (p < 0) return 1 + p; // p in [-1, 0] → [0, 1]
-    if (p > 3.5) return 0;
-    if (p > 2.5) return 1 - (p - 2.5); // fade out deep stack cards
-    return 1;
-  });
-
-  // Larger zIndex = closer to the viewer. Top of stack (relPos 0) should be
-  // highest; flipped-away cards drop behind.
-  const zIndex = useTransform(relPos, (p) => {
-    if (p < 0) return 0;
-    return Math.max(1, Math.round(total - p));
-  });
-
-  // Cards deep in the stack get a slight dimming filter.
-  const brightness = useTransform(relPos, (p) => {
-    if (p < 0) return 1;
-    const p2 = Math.min(p, 4);
-    return 1 - p2 * 0.08;
-  });
-  const filter = useTransform(brightness, (b) => `brightness(${b})`);
-
-  return (
-    <motion.div
-      className="absolute inset-0 flex items-center justify-center"
-      style={{
-        x,
-        y,
-        rotate,
-        scale,
-        opacity,
-        zIndex,
-        filter,
-        transformOrigin: "50% 90%",
-      }}
-    >
-      <div className="w-full max-w-md">
-        <ProjectCardFull post={post} />
-      </div>
-    </motion.div>
-  );
-}
-
-function ScrollStack() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Progress indicator + label only needs a cheap subscription to the active
-  // index; the visual transforms all live inside ScrollStackCard.
-  const [activeIndex, setActiveIndex] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const clamped = Math.max(0, Math.min(0.9999, v));
-    const idx = Math.min(posts.length - 1, Math.floor(clamped * posts.length));
-    setActiveIndex((prev) => (prev === idx ? prev : idx));
-  });
-
-  // Each card gets ~45vh of scroll before it flips away. That keeps the
-  // experience feeling pinned but still snappy — the user can't scroll past
-  // without seeing every folder, but nothing drags.
-  const totalScrollVh = posts.length * 45 + 20;
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative hidden md:block"
-      style={{ height: `${totalScrollVh}vh` }}
-    >
-      <div className="sticky top-20 h-[calc(100vh-5rem)] overflow-hidden">
-        {/* Ambient background gradient */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-        >
-          <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-purple-500/10 blur-3xl" />
-        </div>
-
-        <div className="h-full flex flex-col items-center justify-center px-6">
-          {/* Label row */}
-          <div className="w-full max-w-md mb-6 flex items-center justify-between">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-emerald-400/80 font-semibold">
-              Project {String(activeIndex + 1).padStart(2, "0")} /{" "}
-              {String(posts.length).padStart(2, "0")}
-            </span>
-            <span className="text-[11px] text-neutral-500 flex items-center gap-1.5">
-              <span className="inline-block h-1 w-1 rounded-full bg-emerald-400 animate-pulse" />
-              Scroll to flip
-            </span>
-          </div>
-
-          {/* Stack stage — absolute-positioned cards overlap here */}
-          <div
-            className="relative w-full max-w-md h-[540px]"
-            style={{ perspective: "1200px" }}
-          >
-            {posts.map((post, i) => (
-              <ScrollStackCard
-                key={post.id}
-                post={post}
-                index={i}
-                total={posts.length}
-                scrollProgress={scrollYProgress}
-              />
-            ))}
-          </div>
-
-          {/* Progress dots */}
-          <div className="mt-6 flex items-center justify-center gap-1.5">
-            {posts.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  i === activeIndex
-                    ? "w-8 bg-emerald-400"
-                    : i < activeIndex
-                    ? "w-1.5 bg-emerald-400/40"
-                    : "w-1.5 bg-white/15"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ------------------- main section ------------------- */
 
 export default function Projects() {
@@ -515,8 +313,40 @@ export default function Projects() {
         ))}
       </motion.h2>
 
-      {/* Folder-stack showcase — scroll flips through cards, pinned */}
-      <ScrollStack />
+      {/* Folder-stack showcase — React Bits ScrollStack pins the section
+          and scales each project card as the user scrolls, so it reads like
+          flipping through a stack of file folders. */}
+      <div className="relative hidden md:block max-w-3xl mx-auto px-4">
+        <div className="mb-6 flex items-center justify-between">
+          <span className="text-[11px] uppercase tracking-[0.2em] text-emerald-400/80 font-semibold">
+            Featured stack
+          </span>
+          <span className="text-[11px] text-neutral-500 flex items-center gap-1.5">
+            <span className="inline-block h-1 w-1 rounded-full bg-emerald-400 animate-pulse" />
+            Scroll to flip
+          </span>
+        </div>
+        <ScrollStack
+          useWindowScroll
+          itemDistance={80}
+          itemScale={0.02}
+          itemStackDistance={24}
+          stackPosition="22%"
+          scaleEndPosition="12%"
+          baseScale={0.88}
+          rotationAmount={0}
+          blurAmount={1}
+        >
+          {posts.map((post) => (
+            <ScrollStackItem
+              key={post.id}
+              itemClassName="!p-0 !bg-transparent !shadow-none !rounded-3xl"
+            >
+              <ProjectCardFull post={post} />
+            </ScrollStackItem>
+          ))}
+        </ScrollStack>
+      </div>
 
       {/* Full grid — always accessible, with compact toggle.
           The #projects-all anchor lets the nav bar skip straight to this
