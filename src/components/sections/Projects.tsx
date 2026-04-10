@@ -3,7 +3,16 @@ import driverAdv from "../../assets/Projects/driver-adv.png";
 import healthify from "../../assets/Projects/healthify.png";
 
 import { motion } from "motion/react";
-import { ArrowUpRight, Briefcase, Crown } from "lucide-react";
+import {
+  ArrowUpRight,
+  Briefcase,
+  Crown,
+  FlaskConical,
+  Dice5,
+  Coffee,
+  Dumbbell,
+  ScanLine,
+} from "lucide-react";
 import type { ComponentType } from "react";
 
 import SpotlightCard from "../ui/SpotlightCard";
@@ -80,6 +89,71 @@ const posts: Project[] = [
     placeholderGradient: "from-indigo-900/40 via-purple-900/30 to-fuchsia-800/20",
     date: "2023",
     tags: ["Unity", "ARKit", "C#"],
+  },
+  {
+    id: 6,
+    name: "TI Unit Test Generator",
+    href: "https://github.com/shoaibhuq",
+    type: "Capstone · AI",
+    description:
+      "Texas Instruments capstone — a VS Code extension that generates unit tests for TI-specific C modules using LLM workflows. Built with LangChain + LangGraph, with careful thought on retrieval pipelines, classifier selection, evaluation, and reproducibility.",
+    imageUrl: null,
+    placeholderIcon: FlaskConical,
+    placeholderGradient: "from-red-900/40 via-orange-900/30 to-amber-800/20",
+    date: "2024 – 2025",
+    tags: ["LangChain", "LangGraph", "VS Code", "LLMs", "C"],
+  },
+  {
+    id: 7,
+    name: "Restaurant Roulette",
+    href: "https://github.com/shoaibhuq",
+    type: "Mobile App",
+    description:
+      "A gamified way to pick where to eat — spin the wheel and discover restaurants based on your cuisine, price, distance, and rating preferences. Designed around product structure, API choice, and playful UX.",
+    imageUrl: null,
+    placeholderIcon: Dice5,
+    placeholderGradient: "from-orange-900/40 via-rose-900/30 to-red-800/20",
+    date: "Concept · In progress",
+    tags: ["React Native", "Google Places", "Gamification"],
+  },
+  {
+    id: 8,
+    name: "Brew — Coffee Rating App",
+    href: "https://github.com/shoaibhuq",
+    type: "Mobile App",
+    description:
+      "Beli, but for coffee. Mobile-first app for rating coffee shops and individual drinks, with thinking around AWS/GCP infra, Google Places cost modeling, future commerce for beans and gear, and a clean UX structure.",
+    imageUrl: null,
+    placeholderIcon: Coffee,
+    placeholderGradient: "from-amber-900/40 via-yellow-900/30 to-orange-800/20",
+    date: "Concept · In progress",
+    tags: ["React Native", "AWS", "GCP", "Google Places"],
+  },
+  {
+    id: 9,
+    name: "Lift — Natural Language Gym App",
+    href: "https://github.com/shoaibhuq",
+    type: "Mobile App",
+    description:
+      "Workout logging without the friction. Type notes naturally (\"bench 3x5 @185\") and the app parses exercises, reps, sets, and weight. Roadmap includes fuzzy autocomplete, trainer-uploaded routines, Apple Health sync, and 3D body scanning.",
+    imageUrl: null,
+    placeholderIcon: Dumbbell,
+    placeholderGradient: "from-emerald-900/40 via-teal-900/30 to-cyan-800/20",
+    date: "Concept · In progress",
+    tags: ["Swift", "NLP", "HealthKit"],
+  },
+  {
+    id: 10,
+    name: "Snapshot — Image to Calendar",
+    href: "https://github.com/shoaibhuq",
+    type: "Mobile App",
+    description:
+      "Turn any screenshot, flyer, or syllabus photo into calendar events and tasks. OCR + lightweight LLM parsing removes the friction of manually transcribing dates — pure low-friction productivity.",
+    imageUrl: null,
+    placeholderIcon: ScanLine,
+    placeholderGradient: "from-sky-900/40 via-blue-900/30 to-indigo-800/20",
+    date: "Concept · In progress",
+    tags: ["OCR", "LLMs", "iOS"],
   },
 ];
 
