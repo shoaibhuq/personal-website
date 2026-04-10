@@ -6,13 +6,11 @@ import healthify from "../../assets/Projects/healthify.png";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight,
-  Briefcase,
   Crown,
   FlaskConical,
   Dice5,
   Coffee,
   Dumbbell,
-  ScanLine,
   LayoutGrid,
   Rows3,
 } from "lucide-react";
@@ -70,19 +68,6 @@ const posts: Project[] = [
   },
   {
     id: 4,
-    name: "Wells Fargo — SWE",
-    href: "https://www.linkedin.com/in/shoaibhuq/",
-    type: "Professional",
-    description:
-      "Software engineering role at Wells Fargo — building and maintaining enterprise-grade services in a large-scale production environment.",
-    imageUrl: null,
-    placeholderIcon: Briefcase,
-    placeholderGradient: "from-red-900/40 via-amber-900/30 to-yellow-800/20",
-    date: "2024 – Present",
-    tags: ["Java", "Spring", "AWS"],
-  },
-  {
-    id: 5,
     name: "AR Chess @ UTD Plaza",
     href: "https://github.com/shoaibhuq",
     type: "AR Experience",
@@ -96,7 +81,7 @@ const posts: Project[] = [
     tags: ["Unity", "ARKit", "C#"],
   },
   {
-    id: 6,
+    id: 5,
     name: "TI Unit Test Generator",
     href: "https://github.com/shoaibhuq",
     type: "Capstone · AI",
@@ -109,7 +94,7 @@ const posts: Project[] = [
     tags: ["LangChain", "LangGraph", "VS Code", "LLMs", "C"],
   },
   {
-    id: 7,
+    id: 6,
     name: "Restaurant Roulette",
     href: "https://github.com/shoaibhuq",
     type: "Mobile App",
@@ -122,7 +107,7 @@ const posts: Project[] = [
     tags: ["React Native", "Google Places", "Gamification"],
   },
   {
-    id: 8,
+    id: 7,
     name: "Brew — Coffee Rating App",
     href: "https://github.com/shoaibhuq",
     type: "Mobile App",
@@ -135,7 +120,7 @@ const posts: Project[] = [
     tags: ["React Native", "AWS", "GCP", "Google Places"],
   },
   {
-    id: 9,
+    id: 8,
     name: "Lift — Natural Language Gym App",
     href: "https://github.com/shoaibhuq",
     type: "Mobile App",
@@ -147,19 +132,6 @@ const posts: Project[] = [
     date: "Concept · In progress",
     tags: ["Swift", "NLP", "HealthKit"],
   },
-  {
-    id: 10,
-    name: "Snapshot — Image to Calendar",
-    href: "https://github.com/shoaibhuq",
-    type: "Mobile App",
-    description:
-      "Turn any screenshot, flyer, or syllabus photo into calendar events and tasks. OCR + lightweight LLM parsing removes the friction of manually transcribing dates — pure low-friction productivity.",
-    imageUrl: null,
-    placeholderIcon: ScanLine,
-    placeholderGradient: "from-sky-900/40 via-blue-900/30 to-indigo-800/20",
-    date: "Concept · In progress",
-    tags: ["OCR", "LLMs", "iOS"],
-  },
 ];
 
 /* ------------------- card components ------------------- */
@@ -167,8 +139,10 @@ const posts: Project[] = [
 function ProjectCardFull({ post }: { post: Project }) {
   const PlaceholderIcon = post.placeholderIcon;
   return (
+    // Force an opaque background so this card fully covers anything behind
+    // it — crucial inside the React Bits ScrollStack where cards overlap.
     <SpotlightCard
-      className="h-full flex flex-col !p-5 sm:!p-6"
+      className="h-full flex flex-col !p-5 sm:!p-6 !bg-neutral-950"
       spotlightColor="rgba(16, 185, 129, 0.15)"
     >
       {/* Image */}
@@ -329,18 +303,18 @@ export default function Projects() {
         <ScrollStack
           useWindowScroll
           itemDistance={80}
-          itemScale={0.02}
-          itemStackDistance={24}
+          itemScale={0.03}
+          itemStackDistance={28}
           stackPosition="22%"
           scaleEndPosition="12%"
-          baseScale={0.88}
+          baseScale={0.86}
           rotationAmount={0}
-          blurAmount={1}
+          blurAmount={0}
         >
           {posts.map((post) => (
             <ScrollStackItem
               key={post.id}
-              itemClassName="!p-0 !bg-transparent !shadow-none !rounded-3xl"
+              itemClassName="!p-0 !bg-neutral-950 !shadow-[0_10px_60px_-15px_rgba(0,0,0,0.7)] !rounded-3xl"
             >
               <ProjectCardFull post={post} />
             </ScrollStackItem>

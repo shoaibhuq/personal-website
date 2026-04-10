@@ -191,9 +191,17 @@ export default function TrashToss() {
         b.y += b.vy * dt;
         b.rotation += b.spin * dt;
 
-        // Did the ball cross the rim line downward this frame?
+        // Did the ball cross the rim line downward this frame, *and* is
+        // its center horizontally within the can? Without the horizontal
+        // gate the rim-bounce fires for balls flying past the can too,
+        // which leaves them frozen in mid-air off to the side.
+        const centerInCan = b.x >= canLeft && b.x <= canRight;
         const crossedRim =
-          !b.scored && b.vy > 0 && prevY <= canTopY && b.y + BALL_R >= canTopY;
+          !b.scored &&
+          b.vy > 0 &&
+          prevY + BALL_R <= canTopY &&
+          b.y + BALL_R >= canTopY &&
+          centerInCan;
 
         if (crossedRim) {
           if (b.x > openingLeft && b.x < openingRight) {
@@ -202,10 +210,15 @@ export default function TrashToss() {
             didScore = true;
             continue;
           }
-          // Hit the rim (left or right edge). Bounce the ball off the top.
-          b.y = canTopY - BALL_R;
-          b.vy = -Math.abs(b.vy) * 0.35;
-          b.vx *= 0.55;
+          // Hit the rim on either side of the opening. Bounce off the top
+          // and nudge the ball outward so it can actually roll off instead
+          // of micro-bouncing on the rail forever.
+          b.y = canTopY - BALL_R - 0.5;
+          const bouncedVy = -Math.abs(b.vy) * 0.35;
+          b.vy = Math.abs(bouncedVy) < 90 ? -90 : bouncedVy;
+          const midCan = (canLeft + canRight) / 2;
+          const outwardNudge = b.x < midCan ? -90 : 90;
+          b.vx = b.vx * 0.7 + outwardNudge;
           b.spin *= 0.5;
         }
 
