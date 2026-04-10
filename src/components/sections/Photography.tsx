@@ -12,7 +12,6 @@ import SpotlightCard from "../ui/SpotlightCard";
 import BookingModal from "../ui/BookingModal";
 import Aurora from "../ui/Aurora";
 import RotatingText from "../ui/RotatingText";
-import TravelMap from "../ui/TravelMap";
 
 import photo1 from "../../assets/Photography/photo1.jpg";
 import photo2 from "../../assets/Photography/photo2.jpg";
@@ -89,7 +88,6 @@ export default function Photography() {
       <Hero onBook={() => setBookingOpen(true)} />
       <ServicesStrip />
       {isDesktop ? <ParallaxGallery /> : <MobileGallery />}
-      <TravelMap />
       <ScheduleCTA onBook={() => setBookingOpen(true)} />
       <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </div>

@@ -1,12 +1,13 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-} from "react-simple-maps";
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  InfoWindow,
+  useAdvancedMarkerRef,
+} from "@vis.gl/react-google-maps";
 import { motion, AnimatePresence } from "motion/react";
-import { MapPin, Plane, BedDouble, Globe2 } from "lucide-react";
+import { Plane, BedDouble, Globe2, MapPin } from "lucide-react";
 
 import SpotlightCard from "./SpotlightCard";
 import {
@@ -15,73 +16,137 @@ import {
   type TravelLocation,
 } from "../../data/travelLocations";
 
-// Public topojson from world-atlas. Loaded at runtime.
-const GEO_URL =
-  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined;
 
-interface TooltipState {
+// Optional custom Map ID for cloud-based styling. If not provided, we fall
+// back to inline `styles` (works with classic maps, not Advanced Markers in
+// every mode — but google tolerates it fine for rendering).
+const MAP_ID =
+  (import.meta.env.VITE_GOOGLE_MAPS_MAP_ID as string | undefined) ??
+  "shoaib_travel_map";
+
+// Dark purple/pink themed styles matching the site palette.
+const mapStyles: google.maps.MapTypeStyle[] = [
+  { elementType: "geometry", stylers: [{ color: "#0b0820" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#0b0820" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#8b7ec8" }] },
+  {
+    featureType: "administrative.country",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#2e2757" }],
+  },
+  {
+    featureType: "administrative.land_parcel",
+    stylers: [{ visibility: "off" }],
+  },
+  {
+    featureType: "administrative.locality",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#c4b5fd" }],
+  },
+  {
+    featureType: "landscape",
+    elementType: "geometry",
+    stylers: [{ color: "#1f1b3d" }],
+  },
+  {
+    featureType: "poi",
+    stylers: [{ visibility: "off" }],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [{ color: "#2a2451" }],
+  },
+  {
+    featureType: "road",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }],
+  },
+  {
+    featureType: "transit",
+    stylers: [{ visibility: "off" }],
+  },
+  {
+    featureType: "water",
+    elementType: "geometry",
+    stylers: [{ color: "#060418" }],
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#6d5bb5" }],
+  },
+];
+
+const DEFAULT_CENTER = { lat: 20, lng: 20 };
+
+interface MarkerWithInfoProps {
   loc: TravelLocation;
-  x: number;
-  y: number;
+  isSelected: boolean;
+  onSelect: (loc: TravelLocation | null) => void;
 }
 
-function MarkerDot({
-  loc,
-  onEnter,
-  onLeave,
-  isActive,
-}: {
-  loc: TravelLocation;
-  onEnter: (e: React.MouseEvent, l: TravelLocation) => void;
-  onLeave: () => void;
-  isActive: boolean;
-}) {
+function MarkerWithInfo({ loc, isSelected, onSelect }: MarkerWithInfoProps) {
+  const [markerRef, marker] = useAdvancedMarkerRef();
   const isUpcoming = loc.status === "upcoming";
-  const fill = isUpcoming ? "#f472b6" : "#34d399";
-  const ring = isUpcoming
-    ? "rgba(244, 114, 182, 0.35)"
-    : "rgba(52, 211, 153, 0.35)";
+  const position = { lat: loc.coordinates[1], lng: loc.coordinates[0] };
 
   return (
-    <Marker coordinates={loc.coordinates}>
-      {/* Pulsing ring */}
-      <circle r={9} fill={ring}>
-        <animate
-          attributeName="r"
-          values="6;12;6"
-          dur="2.4s"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="opacity"
-          values="0.6;0;0.6"
-          dur="2.4s"
-          repeatCount="indefinite"
-        />
-      </circle>
-      {/* Solid dot */}
-      <circle
-        r={isActive ? 5 : 3.5}
-        fill={fill}
-        stroke="#0a0a0a"
-        strokeWidth={1}
-        onMouseEnter={(e) => onEnter(e, loc)}
-        onMouseLeave={onLeave}
-        style={{ cursor: "pointer", transition: "r 0.2s ease-out" }}
-      />
-    </Marker>
+    <>
+      <AdvancedMarker
+        ref={markerRef}
+        position={position}
+        onClick={() => onSelect(isSelected ? null : loc)}
+      >
+        <div className="relative flex items-center justify-center">
+          <span
+            className={`absolute h-6 w-6 rounded-full animate-ping opacity-60 ${
+              isUpcoming ? "bg-pink-400" : "bg-emerald-400"
+            }`}
+          />
+          <span
+            className={`relative h-3.5 w-3.5 rounded-full border-2 border-black shadow-lg ${
+              isUpcoming ? "bg-pink-400" : "bg-emerald-400"
+            } ${isSelected ? "scale-150" : ""} transition-transform`}
+          />
+        </div>
+      </AdvancedMarker>
+      {isSelected && marker && (
+        <InfoWindow
+          anchor={marker}
+          onCloseClick={() => onSelect(null)}
+          headerDisabled
+        >
+          <div className="min-w-[180px] rounded-lg bg-neutral-900 p-3 text-white border border-white/10">
+            <div className="flex items-center gap-2 text-sm font-semibold">
+              <MapPin className="h-3.5 w-3.5 text-pink-300" />
+              {loc.label}
+            </div>
+            <div className="mt-1 text-[11px] text-gray-400">
+              {formatTravelDate(loc)}
+            </div>
+            {loc.sourceName && (
+              <div className="mt-1 text-[11px] text-gray-500 truncate">
+                {loc.sourceName}
+              </div>
+            )}
+          </div>
+        </InfoWindow>
+      )}
+    </>
   );
 }
 
 export default function TravelMap() {
-  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [selected, setSelected] = useState<TravelLocation | null>(null);
 
   const stats = useMemo(() => {
     const countries = new Set(travelLocations.map((l) => l.country));
     const cities = new Set(travelLocations.map((l) => l.city));
-    const upcoming = travelLocations.filter((l) => l.status === "upcoming")
-      .length;
+    const upcoming = travelLocations.filter(
+      (l) => l.status === "upcoming"
+    ).length;
     return {
       countries: countries.size,
       cities: cities.size,
@@ -100,11 +165,6 @@ export default function TravelMap() {
       return bDate.localeCompare(aDate);
     });
   }, []);
-
-  const handleEnter = (e: React.MouseEvent, loc: TravelLocation) => {
-    setTooltip({ loc, x: e.clientX, y: e.clientY });
-  };
-  const handleLeave = () => setTooltip(null);
 
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
@@ -125,8 +185,8 @@ export default function TravelMap() {
             Places I've been
           </h2>
           <p className="mt-4 text-sm sm:text-base text-gray-300/80 max-w-2xl mx-auto">
-            Every pin is a memory. Hover a dot on the map — or tap a card — to
-            see when I stayed there.
+            Every pin is a memory. Tap a dot on the map — or a card on the side —
+            to see when I stayed there. Drag and zoom to explore.
           </p>
         </motion.div>
 
@@ -145,81 +205,46 @@ export default function TravelMap() {
           <div className="grid lg:grid-cols-[1.6fr_1fr] gap-6 items-start">
             {/* Map */}
             <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0b0820]">
-              <div className="aspect-[16/10] sm:aspect-[16/9]">
-                <ComposableMap
-                  projectionConfig={{ scale: 155 }}
-                  width={900}
-                  height={500}
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <defs>
-                    <radialGradient id="oceanGlow" cx="50%" cy="50%" r="70%">
-                      <stop
-                        offset="0%"
-                        stopColor="#1e1b4b"
-                        stopOpacity={1}
-                      />
-                      <stop
-                        offset="100%"
-                        stopColor="#0b0820"
-                        stopOpacity={1}
-                      />
-                    </radialGradient>
-                  </defs>
-                  <rect
-                    x="0"
-                    y="0"
-                    width="900"
-                    height="500"
-                    fill="url(#oceanGlow)"
-                  />
-                  <Geographies geography={GEO_URL}>
-                    {({ geographies }) =>
-                      geographies.map((geo) => (
-                        <Geography
-                          key={geo.rsmKey}
-                          geography={geo}
-                          style={{
-                            default: {
-                              fill: "#1f1b3d",
-                              stroke: "#2e2757",
-                              strokeWidth: 0.4,
-                              outline: "none",
-                            },
-                            hover: {
-                              fill: "#2a2451",
-                              stroke: "#3a3270",
-                              strokeWidth: 0.5,
-                              outline: "none",
-                            },
-                            pressed: {
-                              fill: "#2a2451",
-                              outline: "none",
-                            },
-                          }}
+              <div className="aspect-[16/10] sm:aspect-[16/9] w-full">
+                {API_KEY ? (
+                  <APIProvider apiKey={API_KEY}>
+                    <Map
+                      mapId={MAP_ID}
+                      defaultCenter={DEFAULT_CENTER}
+                      defaultZoom={2}
+                      minZoom={2}
+                      maxZoom={14}
+                      gestureHandling="greedy"
+                      disableDefaultUI={false}
+                      zoomControl
+                      fullscreenControl={false}
+                      streetViewControl={false}
+                      mapTypeControl={false}
+                      styles={mapStyles}
+                      className="w-full h-full"
+                    >
+                      {travelLocations.map((loc) => (
+                        <MarkerWithInfo
+                          key={loc.label}
+                          loc={loc}
+                          isSelected={selected?.label === loc.label}
+                          onSelect={setSelected}
                         />
-                      ))
-                    }
-                  </Geographies>
-                  {travelLocations.map((loc) => (
-                    <MarkerDot
-                      key={loc.label}
-                      loc={loc}
-                      onEnter={handleEnter}
-                      onLeave={handleLeave}
-                      isActive={selected?.label === loc.label}
-                    />
-                  ))}
-                </ComposableMap>
+                      ))}
+                    </Map>
+                  </APIProvider>
+                ) : (
+                  <MissingKeyFallback />
+                )}
               </div>
 
               {/* Legend */}
-              <div className="absolute bottom-3 left-3 flex flex-wrap gap-2 text-[11px] sm:text-xs">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-sm px-2.5 py-1 border border-white/10 text-emerald-300">
+              <div className="absolute bottom-3 left-3 flex flex-wrap gap-2 text-[11px] sm:text-xs pointer-events-none">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-sm px-2.5 py-1 border border-white/10 text-emerald-300">
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
                   Past
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-sm px-2.5 py-1 border border-white/10 text-pink-300">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-sm px-2.5 py-1 border border-white/10 text-pink-300">
                   <span className="h-2 w-2 rounded-full bg-pink-400 animate-pulse" />
                   Upcoming
                 </span>
@@ -229,95 +254,84 @@ export default function TravelMap() {
             {/* Location list */}
             <div className="lg:max-h-[500px] lg:overflow-y-auto lg:pr-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.15)_transparent]">
               <ul className="space-y-2">
-                {sortedLocations.map((loc) => {
-                  const isSelected = selected?.label === loc.label;
-                  return (
-                    <li key={loc.label}>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setSelected(isSelected ? null : loc)
-                        }
-                        onMouseEnter={() =>
-                          setSelected(loc)
-                        }
-                        className={`w-full text-left rounded-xl border px-4 py-3 transition-all min-h-[56px] ${
-                          isSelected
-                            ? "border-pink-400/40 bg-pink-500/10"
-                            : "border-white/10 bg-white/[0.02] hover:bg-white/5"
-                        }`}
+                <AnimatePresence initial={false}>
+                  {sortedLocations.map((loc) => {
+                    const isSelected = selected?.label === loc.label;
+                    return (
+                      <motion.li
+                        key={loc.label}
+                        layout
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0 }}
                       >
-                        <div className="flex items-start gap-3">
-                          <span
-                            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border ${
-                              loc.status === "upcoming"
-                                ? "bg-pink-500/15 border-pink-400/30 text-pink-300"
-                                : "bg-emerald-500/15 border-emerald-400/30 text-emerald-300"
-                            }`}
-                          >
-                            {loc.sourceType === "flight" ? (
-                              <Plane className="h-4 w-4" />
-                            ) : (
-                              <BedDouble className="h-4 w-4" />
-                            )}
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center justify-between gap-2">
-                              <p className="text-sm font-semibold text-white truncate">
-                                {loc.city}
-                              </p>
-                              {loc.status === "upcoming" && (
-                                <span className="text-[10px] font-semibold uppercase tracking-wide text-pink-300 bg-pink-500/15 border border-pink-400/30 rounded-full px-2 py-0.5 shrink-0">
-                                  Soon
-                                </span>
+                        <button
+                          type="button"
+                          onClick={() => setSelected(isSelected ? null : loc)}
+                          className={`w-full text-left rounded-xl border px-4 py-3 transition-all min-h-[56px] ${
+                            isSelected
+                              ? "border-pink-400/40 bg-pink-500/10"
+                              : "border-white/10 bg-white/[0.02] hover:bg-white/5"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <span
+                              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border ${
+                                loc.status === "upcoming"
+                                  ? "bg-pink-500/15 border-pink-400/30 text-pink-300"
+                                  : "bg-emerald-500/15 border-emerald-400/30 text-emerald-300"
+                              }`}
+                            >
+                              {loc.sourceType === "flight" ? (
+                                <Plane className="h-4 w-4" />
+                              ) : (
+                                <BedDouble className="h-4 w-4" />
                               )}
+                            </span>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center justify-between gap-2">
+                                <p className="text-sm font-semibold text-white truncate">
+                                  {loc.city}
+                                </p>
+                                {loc.status === "upcoming" && (
+                                  <span className="text-[10px] font-semibold uppercase tracking-wide text-pink-300 bg-pink-500/15 border border-pink-400/30 rounded-full px-2 py-0.5 shrink-0">
+                                    Soon
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-400 truncate">
+                                {loc.country}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                {formatTravelDate(loc)}
+                              </p>
                             </div>
-                            <p className="text-xs text-gray-400 truncate">
-                              {loc.country}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-0.5">
-                              {formatTravelDate(loc)}
-                            </p>
                           </div>
-                        </div>
-                      </button>
-                    </li>
-                  );
-                })}
+                        </button>
+                      </motion.li>
+                    );
+                  })}
+                </AnimatePresence>
               </ul>
             </div>
           </div>
         </SpotlightCard>
       </div>
-
-      {/* Tooltip (desktop hover) */}
-      <AnimatePresence>
-        {tooltip && (
-          <motion.div
-            initial={{ opacity: 0, y: 4, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
-            style={{
-              position: "fixed",
-              left: tooltip.x + 14,
-              top: tooltip.y + 14,
-              pointerEvents: "none",
-              zIndex: 50,
-            }}
-            className="rounded-xl border border-white/10 bg-neutral-900/95 backdrop-blur-md px-3 py-2 shadow-xl shadow-black/50"
-          >
-            <div className="flex items-center gap-2 text-xs font-semibold text-white">
-              <MapPin className="h-3.5 w-3.5 text-pink-300" />
-              {tooltip.loc.label}
-            </div>
-            <div className="text-[11px] text-gray-400 mt-0.5">
-              {formatTravelDate(tooltip.loc)}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
+  );
+}
+
+function MissingKeyFallback() {
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3 p-6 text-center">
+      <Globe2 className="h-10 w-10 text-purple-400/60" />
+      <p className="text-sm font-semibold text-white">Map unavailable</p>
+      <p className="text-xs text-gray-400 max-w-xs">
+        Add <code className="text-purple-300">VITE_GOOGLE_MAPS_API_KEY</code> to
+        your <code className="text-purple-300">.env</code> file to enable the
+        interactive travel map.
+      </p>
+    </div>
   );
 }
 

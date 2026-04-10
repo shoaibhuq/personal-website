@@ -167,13 +167,18 @@ export const travelLocations: TravelLocation[] = [
   },
 ];
 
-/** Format a location's date range for display */
+/** Format a location's date range for display.
+ *
+ * Upcoming trips are intentionally obscured to month + year only so that
+ * exact travel days aren't broadcast publicly while still giving a sense of
+ * when the trip is happening.
+ */
 export function formatTravelDate(loc: TravelLocation): string {
   const start = loc.checkIn ?? loc.departDate;
   const end = loc.checkOut ?? loc.returnDate;
   if (!start) return "";
 
-  const fmt = (iso: string) => {
+  const fmtFull = (iso: string) => {
     const d = new Date(iso);
     return d.toLocaleDateString("en-US", {
       month: "short",
@@ -182,8 +187,27 @@ export function formatTravelDate(loc: TravelLocation): string {
     });
   };
 
-  if (end && end !== start) {
-    return `${fmt(start)} – ${fmt(end)}`;
+  const fmtMonth = (iso: string) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  if (loc.status === "upcoming") {
+    const startMonth = fmtMonth(start);
+    if (end) {
+      const endMonth = fmtMonth(end);
+      if (endMonth !== startMonth) {
+        return `${startMonth} – ${endMonth}`;
+      }
+    }
+    return startMonth;
   }
-  return fmt(start);
+
+  if (end && end !== start) {
+    return `${fmtFull(start)} – ${fmtFull(end)}`;
+  }
+  return fmtFull(start);
 }
