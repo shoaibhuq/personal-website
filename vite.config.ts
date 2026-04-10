@@ -1,5 +1,58 @@
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
+
+// In-dev stand-in for the /api/highscore Vercel serverless function. Reads
+// and updates a single integer stored in the module closure so hitting
+// /api/highscore during `vite dev` behaves like a real backend (minus
+// cross-process persistence, which is fine for a local game prototype).
+function devHighScoreApi(): Plugin {
+  let memoryHighScore = 0;
+  return {
+    name: "dev-high-score-api",
+    configureServer(server) {
+      server.middlewares.use("/api/highscore", (req, res) => {
+        const send = (status: number, body: unknown) => {
+          res.statusCode = status;
+          res.setHeader("content-type", "application/json");
+          res.setHeader("cache-control", "no-store");
+          res.end(JSON.stringify(body));
+        };
+
+        if (req.method === "GET") {
+          return send(200, { highScore: memoryHighScore });
+        }
+
+        if (req.method === "POST") {
+          let raw = "";
+          req.on("data", (chunk) => {
+            raw += chunk;
+          });
+          req.on("end", () => {
+            try {
+              const parsed = JSON.parse(raw || "{}") as { score?: unknown };
+              const score =
+                typeof parsed.score === "number" ? Math.floor(parsed.score) : 0;
+              if (!Number.isFinite(score) || score < 0 || score > 1_000_000) {
+                return send(400, { error: "invalid score" });
+              }
+              const before = memoryHighScore;
+              if (score > memoryHighScore) memoryHighScore = score;
+              return send(200, {
+                highScore: memoryHighScore,
+                updated: memoryHighScore > before,
+              });
+            } catch {
+              return send(400, { error: "invalid body" });
+            }
+          });
+          return;
+        }
+
+        return send(405, { error: "method not allowed" });
+      });
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -11,7 +64,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     assetsInclude: ["**/*.svg"],
-    plugins: [react()],
+    plugins: [react(), devHighScoreApi()],
     root: "./",
     define: {
       __GOOGLE_MAPS_API_KEY__: JSON.stringify(env.GOOGLE_MAPS_API_KEY ?? ""),
