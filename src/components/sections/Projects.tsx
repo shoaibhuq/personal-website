@@ -1,8 +1,14 @@
+import { useRef, useState } from "react";
 import routoraMobile from "../../assets/Projects/routora.png";
 import driverAdv from "../../assets/Projects/driver-adv.png";
 import healthify from "../../assets/Projects/healthify.png";
 
-import { motion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "motion/react";
 import {
   ArrowUpRight,
   Briefcase,
@@ -12,6 +18,8 @@ import {
   Coffee,
   Dumbbell,
   ScanLine,
+  LayoutGrid,
+  Rows3,
 } from "lucide-react";
 import type { ComponentType } from "react";
 
@@ -86,7 +94,8 @@ const posts: Project[] = [
       "Life-size, three-dimensional augmented reality chess experience designed for the UTD chess plaza. Play on the real plaza with virtual pieces tracked in AR.",
     imageUrl: null,
     placeholderIcon: Crown,
-    placeholderGradient: "from-indigo-900/40 via-purple-900/30 to-fuchsia-800/20",
+    placeholderGradient:
+      "from-indigo-900/40 via-purple-900/30 to-fuchsia-800/20",
     date: "2023",
     tags: ["Unity", "ARKit", "C#"],
   },
@@ -135,7 +144,7 @@ const posts: Project[] = [
     href: "https://github.com/shoaibhuq",
     type: "Mobile App",
     description:
-      "Workout logging without the friction. Type notes naturally (\"bench 3x5 @185\") and the app parses exercises, reps, sets, and weight. Roadmap includes fuzzy autocomplete, trainer-uploaded routines, Apple Health sync, and 3D body scanning.",
+      'Workout logging without the friction. Type notes naturally ("bench 3x5 @185") and the app parses exercises, reps, sets, and weight. Roadmap includes fuzzy autocomplete, trainer-uploaded routines, Apple Health sync, and 3D body scanning.',
     imageUrl: null,
     placeholderIcon: Dumbbell,
     placeholderGradient: "from-emerald-900/40 via-teal-900/30 to-cyan-800/20",
@@ -157,8 +166,213 @@ const posts: Project[] = [
   },
 ];
 
+/* ------------------- card components ------------------- */
+
+function ProjectCardFull({ post }: { post: Project }) {
+  const PlaceholderIcon = post.placeholderIcon;
+  return (
+    <SpotlightCard
+      className="h-full flex flex-col !p-5 sm:!p-6"
+      spotlightColor="rgba(16, 185, 129, 0.15)"
+    >
+      {/* Image */}
+      <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-neutral-950/60 border border-white/5 mb-5">
+        {post.imageUrl ? (
+          <img
+            src={post.imageUrl}
+            alt={`${post.name} preview`}
+            className="absolute inset-0 w-full h-full object-contain p-4"
+            loading="lazy"
+          />
+        ) : (
+          <div
+            className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${
+              post.placeholderGradient ?? "from-neutral-800 to-neutral-900"
+            }`}
+          >
+            {PlaceholderIcon && (
+              <PlaceholderIcon className="h-16 w-16 text-white/80" />
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Title + type */}
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <h3 className="text-lg sm:text-xl font-bold text-white leading-tight">
+          {post.name}
+        </h3>
+        <span className="text-[10px] sm:text-xs font-medium text-emerald-400/90 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
+          {post.type}
+        </span>
+      </div>
+      <p className="text-xs text-neutral-400 mb-3">{post.date}</p>
+
+      <p className="text-sm text-neutral-300 leading-relaxed mb-4 flex-1">
+        {post.description}
+      </p>
+
+      <div className="flex flex-wrap gap-2 mb-5">
+        {post.tags.map((tag) => (
+          <span
+            key={tag}
+            className="text-[11px] font-medium text-neutral-300 bg-white/5 border border-white/10 rounded-full px-2.5 py-1"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <a
+        href={post.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group/cta inline-flex items-center justify-between gap-2 mt-auto py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-semibold text-white transition-colors min-h-[44px]"
+      >
+        <span>View Project</span>
+        <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+      </a>
+    </SpotlightCard>
+  );
+}
+
+function ProjectCardCompact({ post }: { post: Project }) {
+  const PlaceholderIcon = post.placeholderIcon;
+  return (
+    <a
+      href={post.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group/card h-full"
+    >
+      <SpotlightCard
+        className="h-full flex flex-col !p-3 hover:!border-emerald-500/30 transition-colors"
+        spotlightColor="rgba(16, 185, 129, 0.12)"
+      >
+        <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-neutral-950/60 border border-white/5 mb-3">
+          {post.imageUrl ? (
+            <img
+              src={post.imageUrl}
+              alt={`${post.name} preview`}
+              className="absolute inset-0 w-full h-full object-contain p-2"
+              loading="lazy"
+            />
+          ) : (
+            <div
+              className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${
+                post.placeholderGradient ?? "from-neutral-800 to-neutral-900"
+              }`}
+            >
+              {PlaceholderIcon && (
+                <PlaceholderIcon className="h-10 w-10 text-white/80" />
+              )}
+            </div>
+          )}
+          <ArrowUpRight className="absolute top-2 right-2 h-4 w-4 text-white/0 group-hover/card:text-white/90 transition-colors" />
+        </div>
+        <h3 className="text-sm font-bold text-white leading-tight line-clamp-2">
+          {post.name}
+        </h3>
+        <p className="text-[10px] text-emerald-400/90 mt-1 truncate">
+          {post.type}
+        </p>
+      </SpotlightCard>
+    </a>
+  );
+}
+
+/* ------------------- scrollytelling showcase ------------------- */
+
+function ScrollShowcase() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    // Clamp within bounds
+    const clamped = Math.max(0, Math.min(0.9999, v));
+    const idx = Math.min(posts.length - 1, Math.floor(clamped * posts.length));
+    setActiveIndex(idx);
+  });
+
+  // Fast: ~18vh of scroll per card
+  const totalScrollVh = posts.length * 18;
+  const active = posts[activeIndex];
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative hidden md:block"
+      style={{ height: `${totalScrollVh}vh` }}
+    >
+      <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center justify-center px-6 overflow-hidden">
+        <div className="relative w-full max-w-lg">
+          {/* Decorative blob */}
+          <div
+            aria-hidden
+            className="absolute -inset-10 bg-gradient-to-br from-emerald-500/10 via-transparent to-purple-500/10 blur-3xl -z-10"
+          />
+
+          <div className="mb-5 flex items-center justify-between">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-emerald-400/80 font-semibold">
+              Showcase · {String(activeIndex + 1).padStart(2, "0")} /{" "}
+              {String(posts.length).padStart(2, "0")}
+            </span>
+            <span className="text-[11px] text-neutral-500">
+              Scroll to browse
+            </span>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active.id}
+              initial={{
+                opacity: 0,
+                y: 50,
+                scale: 0.9,
+                filter: "blur(10px)",
+              }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -40, scale: 0.95, filter: "blur(6px)" }}
+              transition={{
+                duration: 0.35,
+                ease: [0.16, 0.77, 0.47, 0.97],
+              }}
+            >
+              <ProjectCardFull post={active} />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Progress dots */}
+          <div className="mt-6 flex items-center justify-center gap-1.5">
+            {posts.map((_, i) => (
+              <span
+                key={i}
+                className={`h-1 rounded-full transition-all duration-300 ${
+                  i === activeIndex
+                    ? "w-8 bg-emerald-400"
+                    : i < activeIndex
+                    ? "w-1.5 bg-emerald-400/40"
+                    : "w-1.5 bg-white/15"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------- main section ------------------- */
+
 export default function Projects() {
   const titleWords = "Projects".split("");
+  const [compact, setCompact] = useState(false);
 
   return (
     <section id="projects" className="py-16 sm:py-20">
@@ -190,96 +404,94 @@ export default function Projects() {
         ))}
       </motion.h2>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <ul
+      {/* Scrollytelling showcase — one card at a time as you scroll */}
+      <ScrollShowcase />
+
+      {/* Full grid — always accessible, with compact toggle */}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-16 md:mt-24">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 className="text-white text-xl sm:text-2xl font-bold">
+              All projects
+            </h3>
+            <p className="text-sm text-neutral-400 mt-1">
+              {posts.length} total — toggle the view
+            </p>
+          </div>
+          <div
+            role="tablist"
+            aria-label="View mode"
+            className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur-sm"
+          >
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!compact}
+              onClick={() => setCompact(false)}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors min-h-[36px] ${
+                !compact
+                  ? "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30"
+                  : "text-neutral-400 hover:text-white border border-transparent"
+              }`}
+            >
+              <Rows3 className="h-3.5 w-3.5" />
+              Detailed
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={compact}
+              onClick={() => setCompact(true)}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors min-h-[36px] ${
+                compact
+                  ? "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30"
+                  : "text-neutral-400 hover:text-white border border-transparent"
+              }`}
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+              Compact
+            </button>
+          </div>
+        </div>
+
+        <motion.ul
+          layout
           role="list"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+          className={
+            compact
+              ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"
+              : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+          }
         >
-          {posts.map((post, index) => {
-            const PlaceholderIcon = post.placeholderIcon;
-            return (
+          <AnimatePresence mode="popLayout">
+            {posts.map((post, index) => (
               <motion.li
+                layout
                 key={post.id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+                viewport={{ once: true, margin: "0px 0px -60px 0px" }}
                 transition={{
-                  duration: 0.6,
-                  delay: index * 0.08,
+                  layout: {
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 26,
+                  },
+                  duration: 0.45,
+                  delay: index * 0.04,
                   ease: [0.16, 0.77, 0.47, 0.97],
                 }}
                 className="h-full"
               >
-                <SpotlightCard
-                  className="h-full flex flex-col !p-5 sm:!p-6"
-                  spotlightColor="rgba(16, 185, 129, 0.15)"
-                >
-                  {/* Image */}
-                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-neutral-950/60 border border-white/5 mb-5">
-                    {post.imageUrl ? (
-                      <img
-                        src={post.imageUrl}
-                        alt={`${post.name} preview`}
-                        className="absolute inset-0 w-full h-full object-contain p-4"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div
-                        className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${
-                          post.placeholderGradient ??
-                          "from-neutral-800 to-neutral-900"
-                        }`}
-                      >
-                        {PlaceholderIcon && (
-                          <PlaceholderIcon className="h-16 w-16 text-white/80" />
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Title + date */}
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <h3 className="text-lg sm:text-xl font-bold text-white leading-tight">
-                      {post.name}
-                    </h3>
-                    <span className="text-[10px] sm:text-xs font-medium text-emerald-400/90 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2.5 py-1 whitespace-nowrap shrink-0">
-                      {post.type}
-                    </span>
-                  </div>
-                  <p className="text-xs text-neutral-400 mb-3">{post.date}</p>
-
-                  {/* Description */}
-                  <p className="text-sm text-neutral-300 leading-relaxed mb-4 flex-1">
-                    {post.description}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-5">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[11px] font-medium text-neutral-300 bg-white/5 border border-white/10 rounded-full px-2.5 py-1"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA */}
-                  <a
-                    href={post.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/cta inline-flex items-center justify-between gap-2 mt-auto py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-semibold text-white transition-colors min-h-[44px]"
-                  >
-                    <span>View Project</span>
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
-                  </a>
-                </SpotlightCard>
+                {compact ? (
+                  <ProjectCardCompact post={post} />
+                ) : (
+                  <ProjectCardFull post={post} />
+                )}
               </motion.li>
-            );
-          })}
-        </ul>
+            ))}
+          </AnimatePresence>
+        </motion.ul>
       </div>
     </section>
   );

@@ -7,6 +7,8 @@ import img5 from "../../assets/AboutMe/about5.jpg";
 
 import { motion } from "motion/react";
 
+import TravelMap from "../ui/TravelMap";
+
 const AboutMe = () => {
   const containerVariant = {
     hidden: {},
@@ -206,6 +208,9 @@ const AboutMe = () => {
           </div>
         </div>
       </div>
+
+      {/* Places I've been — travel map */}
+      <TravelMap />
     </div>
   );
 };
