@@ -60,14 +60,22 @@ export default defineConfig(({ mode }) => {
   // ALL env vars, not just ones prefixed with VITE_ — this lets us expose
   // plainly-named variables like GOOGLE_MAPS_API_KEY to the client via
   // `define` without requiring the VITE_ prefix in the user's .env.
+  //
+  // IMPORTANT: loadEnv ONLY reads .env* files on disk. It does NOT read
+  // from process.env, so Vercel-injected build-time env vars (configured
+  // in the Vercel dashboard) are invisible to loadEnv. Fall back to
+  // process.env so the same config works locally (.env) and on Vercel
+  // (dashboard env vars) without any duplication.
   const env = loadEnv(mode, process.cwd(), "");
+  const googleMapsApiKey =
+    env.GOOGLE_MAPS_API_KEY ?? process.env.GOOGLE_MAPS_API_KEY ?? "";
 
   return {
     assetsInclude: ["**/*.svg"],
     plugins: [react(), devHighScoreApi()],
     root: "./",
     define: {
-      __GOOGLE_MAPS_API_KEY__: JSON.stringify(env.GOOGLE_MAPS_API_KEY ?? ""),
+      __GOOGLE_MAPS_API_KEY__: JSON.stringify(googleMapsApiKey),
     },
   };
 });
