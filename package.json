@@ -33,7 +33,7 @@
     "tailwind-merge": "^2.6.1",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.183.2",
-    "undici": "^7.2.1"
+    "undici": "^7.28.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
